@@ -1,7 +1,7 @@
 import db from "../db/connection.js";
 
 export const getAllProduk = (req, res) => {
-  const sql = "SELECT * FROM menus";
+  const sql = "SELECT * FROM products";
 
   db.query(sql, (err, results) => {
     if (err) {

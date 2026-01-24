@@ -10,7 +10,8 @@ export default function Layout({ children }) {
       <Header onMenuClick={() => setOpen(true)} />
       <Sidebar isOpen={open} onClose={() => setOpen(false)} />
 
-      <main className="max-w-7xl mx-auto px-6 py-10">
+      {/* ❌ HAPUS max-w-7xl */}
+      <main>
         {children}
       </main>
     </div>
