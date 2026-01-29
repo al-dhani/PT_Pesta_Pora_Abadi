@@ -22,12 +22,13 @@ export default function Header({ onMenuClick }) {
         </div>
 
         <nav className="flex gap-6 font-medium text-gray-700">
-          <Link to="/">Home</Link>
-          <Link to="/profile">Profile</Link>
-          <Link to="/produk">Produk</Link>
-          <Link to="/visimisi">Visi & Misi</Link>
-          <Link to="/kontak">Kontak</Link>
-          <Link to="/about">About</Link>
+          <a href="#home" className="hover:text-[#EC008C]">Home</a>
+          <a href="#about" className="hover:text-[#EC008C]">About</a>
+          <a href="#visimisi" className="hover:text-[#EC008C]">Visi&Misi</a>
+          <a href="#profile" className="hover:text-[#EC008C]">Profile</a>
+          <a href="#products" className="hover:text-[#EC008C]">Produk</a>
+          <a href="#gallery" className="hover:text-[#EC008C]">Gallery</a>
+          <a href="#contact" className="hover:text-[#EC008C]">Kontak</a>
         </nav>
       </div>
     </header>

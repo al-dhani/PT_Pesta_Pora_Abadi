@@ -1,31 +1,43 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Home() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [showAll, setShowAll] = useState(false);
   
-  // Data dummy untuk produk (nanti diambil dari database)
-  const products = [
-    { id: 1, name: "Mie Gacoan Original", price: "Rp 15.000", image: "🍜", category: "Makanan" },
-    { id: 2, name: "Mie Gacoan Level 10", price: "Rp 15.000", image: "🌶️", category: "Makanan" },
-    { id: 3, name: "Dimsum Original", price: "Rp 12.000", image: "🥟", category: "Snack" },
-    { id: 4, name: "Es Teh Manis", price: "Rp 5.000", image: "🧋", category: "Minuman" }
-  ];
+  const [products, setProducts] = useState([]);
+  useEffect(() => {
+  fetch("http://localhost:5000/api/produk")
+    .then(res => res.json())
+    .then(data => {
+      setProducts(data);
+    })
+    .catch(err => {
+      console.error("Gagal ambil data produk:", err);
+    });
+}, []);
 
-  // Data dummy untuk gallery (nanti diambil dari database)
-  const gallery = [
-    { id: 1, title: "Outlet Jakarta", image: "🏪" },
-    { id: 2, title: "Suasana Indoor", image: "🍽️" },
-    { id: 3, title: "Team Service", image: "👥" },
-    { id: 4, title: "Kitchen Area", image: "👨‍🍳" }
-  ];
+const displayedProducts = showAll
+  ? products
+  : products.slice(0, 4);
 
-  // Data dummy untuk klien (nanti diambil dari database)
-  const clients = [
-    { id: 1, name: "Gojek", logo: "🟢" },
-    { id: 2, name: "Grab", logo: "🟢" },
-    { id: 3, name: "ShopeeFood", logo: "🟠" },
-    { id: 4, name: "Traveloka", logo: "🔵" }
-  ];
+  const [galeri, setGaleri] = useState([]);
+useEffect(() => {
+  fetch("http://localhost:5000/api/galeri")
+    .then(res => res.json())
+    .then(data => setGaleri(data))
+    .catch(err => console.error("Gagal ambil galeri:", err));
+}, []);
+
+
+  const [partners, setPartners] = useState([]);
+
+useEffect(() => {
+  fetch("http://localhost:5000/api/partners")
+    .then(res => res.json())
+    .then(data => setPartners(data))
+    .catch(err => console.error("Gagal ambil partners:", err));
+}, []);
+
 
   // Data dummy untuk artikel (nanti diambil dari database)
   const articles = [
@@ -41,15 +53,32 @@ export default function Home() {
     { id: 3, title: "Mie Gacoan Festival 2026", date: "1 Mar 2026", location: "Surabaya", image: "🎪" }
   ];
 
-  const teamMembers = [
-    { name: "Budi Santoso", position: "CEO & Founder", image: "👨‍💼" },
-    { name: "Siti Nurhaliza", position: "COO", image: "👩‍💼" },
-    { name: "Ahmad Rizki", position: "Head of Marketing", image: "👨‍💼" },
-    { name: "Maya Putri", position: "Head of Operations", image: "👩‍💼" }
-  ];
+  const menuFavorites = [
+  {
+    name: "Mie Gacoan",
+    description: "Mie pedas favorit dengan level sesuai selera.",
+    image: "/images/miegacoan.png",
+  },
+  {
+    name: "Udang Rambutan",
+    description: "Camilan renyah dengan isian udang pilihan.",
+    image: "/images/udangrambutan.png",
+  },
+  {
+    name: "Udang Keju",
+    description: "Perpaduan udang gurih dan keju lumer.",
+    image: "/images/udangkeju.png",
+  },
+  {
+    name: "Es Gobak Sodor",
+    description: "Minuman segar favorit pendamping makanan.",
+    image: "/images/esgobaksodor.png",
+  },
+];
+
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#F9FAFB]">
       {/* HERO SECTION - COVER DEPAN */}
       <section
   id="home"
@@ -58,7 +87,6 @@ export default function Home() {
     backgroundImage: "url('/images/hero-bg.png')",
   }}
 >
-
         {/* overlay */}
         <div className="absolute inset-0 bg-black opacity-25"></div>
 
@@ -86,11 +114,28 @@ export default function Home() {
             </p>
 
             {/* CTA */}
-            <div className="flex flex-wrap gap-4">
-              <button className="bg-white text-[#EC008C] px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition">
+            <div 
+            className="flex flex-wrap gap-4">
+              <button
+                onClick={() => {
+                  document.getElementById("products")?.scrollIntoView({
+                    behavior: "smooth",
+                  });
+                }}
+                className="bg-white text-[#EC008C] px-8 py-3 rounded-full 
+                font-semibold hover:bg-gray-100 transition"
+              >
                 Lihat Produk
               </button>
-              <button className="border-2 border-white text-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-[#EC008C] transition">
+              <button
+                onClick={() => {
+                  document.getElementById("about")?.scrollIntoView({
+                    behavior: "smooth",
+                  });
+                }}
+                className="border-2 border-white text-white px-8 py-3 rounded-full 
+                font-semibold hover:bg-white hover:text-[#EC008C] transition"
+              >
                 Tentang Kami
               </button>
             </div>
@@ -110,7 +155,7 @@ export default function Home() {
 
 
       {/* ABOUT US / TENTANG KAMI */}
-      <section id="about" className="py-16 bg-white">
+      <section id="about" className="py-16 bg-gradient-to-b from-white to-[#FDEAF3]">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold text-gray-800 mb-4">We Can Create With The Acme Solution</h2>
@@ -123,8 +168,8 @@ export default function Home() {
             <div className="space-y-6">
               <h3 className="text-3xl font-bold text-[#EC008C]">Tentang Kami</h3>
               <p className="text-gray-700 leading-relaxed">
-                <strong>Mie Gacoan</strong> merupakan brand kuliner di bawah naungan <strong>PT Pesta Pora Abadi</strong> 
-                yang didirikan pada tahun 2016 di Malang, Jawa Timur. Kami menghadirkan konsep mie pedas modern dengan 
+                <strong>Mie Gacoan</strong> merupakan brand kuliner di bawah naungan <strong>PT Pesta Pora Abadi</strong> yang 
+                didirikan pada tahun 2016 di Malang, Jawa Timur. Kami menghadirkan konsep mie pedas modern dengan 
                 harga terjangkau yang menyasar generasi muda Indonesia.
               </p>
               <p className="text-gray-700 leading-relaxed">
@@ -189,7 +234,7 @@ export default function Home() {
       </section>
 
       {/* VISI MISI */}
-      <section className="py-16 bg-gray-50">
+      <section id="visimisi" className="py-16 bg-[#F1F8FC]">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold text-gray-800 mb-4">Visi & Misi</h2>
@@ -233,7 +278,7 @@ export default function Home() {
       </section>
 
       {/* PROFILE, PENGALAMAN & KELEBIHAN */}
-      <section className="py-16 bg-white">
+      <section id="profile" className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold text-gray-800 mb-4">We Solve IT Problems With Technology</h2>
@@ -303,80 +348,111 @@ export default function Home() {
         </div>
       </section>
 
-      {/* DEDICATED TEAM MEMBERS */}
-      <section className="py-16 bg-gradient-to-r from-[#2C3E50] to-[#34495E] text-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold mb-4">We Are Increasing Business Success</h2>
-            <p className="text-gray-300">Tim profesional kami yang siap melayani Anda</p>
-          </div>
+      {/* BRAND STATS SECTION */}
+<section className="py-16 bg-gradient-to-r from-[#2C3E50] to-[#34495E] text-white">
+  <div className="container mx-auto px-4">
+    <div className="text-center mb-12">
+      <h2 className="text-4xl font-bold mb-4">Mie Gacoan dalam Angka</h2>
+      <p className="text-gray-300">
+        Merek mie pedas favorit dengan ribuan pelanggan di seluruh Indonesia
+      </p>
+    </div>
 
-          {/* Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
-            <div className="text-center">
-              <div className="text-4xl font-bold text-[#00B4D8]">8,450+</div>
-              <div className="text-sm text-gray-300 mt-2">Project Done</div>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl font-bold text-[#EC008C]">980+</div>
-              <div className="text-sm text-gray-300 mt-2">Expert People</div>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl font-bold text-[#FFD700]">350+</div>
-              <div className="text-sm text-gray-300 mt-2">World Awards</div>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl font-bold text-[#4CAF50]">15M+</div>
-              <div className="text-sm text-gray-300 mt-2">Happy Customers</div>
-            </div>
-          </div>
+    {/* Stats */}
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
+      <div className="text-center">
+        <div className="text-4xl font-bold text-[#00B4D8]">300+</div>
+        <div className="text-sm text-gray-300 mt-2">Outlet di Indonesia</div>
+      </div>
 
-          {/* Team Members */}
-          <div className="text-center mb-8">
-            <h3 className="text-3xl font-bold mb-4">Our Latest Incredible Client's Projects</h3>
-            <button className="bg-[#00B4D8] px-6 py-2 rounded-full hover:bg-[#0096b8] transition">
-              View All
-            </button>
-          </div>
+      <div className="text-center">
+        <div className="text-4xl font-bold text-[#EC008C]">50+</div>
+        <div className="text-sm text-gray-300 mt-2">Kota Tersedia</div>
+      </div>
 
-          <div className="grid md:grid-cols-4 gap-6">
-            {teamMembers.map((member, index) => (
-              <div key={index} className="bg-gradient-to-br from-[#1a2332] to-[#2d3e50] p-6 rounded-xl text-center hover:transform hover:scale-105 transition">
-                <div className="text-6xl mb-4">{member.image}</div>
-                <h4 className="font-bold text-lg mb-1">{member.name}</h4>
-                <p className="text-[#00B4D8] text-sm">{member.position}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <div className="text-center">
+        <div className="text-4xl font-bold text-[#FFD700]">2016</div>
+        <div className="text-sm text-gray-300 mt-2">Tahun Berdiri</div>
+      </div>
+
+      <div className="text-center">
+        <div className="text-4xl font-bold text-[#4CAF50]">10M+</div>
+        <div className="text-sm text-gray-300 mt-2">Pelanggan Puas</div>
+      </div>
+    </div>
+
+   {/* Menu Highlight */}
+<div className="text-center mb-8">
+  <h3 className="text-3xl font-bold mb-4">Menu Favorit Pelanggan</h3>
+  <p className="text-gray-300">
+    Beberapa menu andalan yang paling sering dipesan pelanggan
+  </p>
+</div>
+
+<div className="grid md:grid-cols-4 gap-6">
+  {menuFavorites.map((menu, index) => (
+    <div
+      key={index}
+      className="bg-gradient-to-br from-[#1a2332] to-[#2d3e50] p-6 rounded-xl text-center hover:transform hover:scale-105 transition"
+    >
+      <img
+        src={menu.image}
+        alt={menu.name}
+        className="w-24 h-24 mx-auto mb-4 object-contain"
+      />
+      <h4 className="font-bold text-lg mb-1">{menu.name}</h4>
+      <p className="text-gray-300 text-sm">{menu.description}</p>
+    </div>
+  ))}
+</div>
+  </div>
+</section>
 
       {/* PRODUK/JASA - dari database */}
-      <section id="products" className="py-16 bg-gray-50">
+      <section
+        id="products"
+        className="py-16 bg-gradient-to-br from-[#FDEAF3] via-white to-[#E6F7FB]"
+      >
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-800 mb-4">Produk Kami</h2>
-            <p className="text-gray-600">Menu unggulan yang kami tawarkan</p>
-          </div>
-
-          <div className="flex justify-center space-x-4 mb-8">
-            <button className="px-6 py-2 bg-[#EC008C] text-white rounded-full">Semua</button>
-            <button className="px-6 py-2 bg-white text-gray-700 rounded-full hover:bg-gray-100">Makanan</button>
-            <button className="px-6 py-2 bg-white text-gray-700 rounded-full hover:bg-gray-100">Minuman</button>
-            <button className="px-6 py-2 bg-white text-gray-700 rounded-full hover:bg-gray-100">Snack</button>
+            <h2 className="text-4xl font-bold text-gray-800 mb-4">
+              Produk Kami
+            </h2>
+            <p className="text-gray-600">
+              Menu unggulan yang kami tawarkan
+            </p>
           </div>
 
           <div className="grid md:grid-cols-4 gap-6">
-            {products.map(product => (
-              <div key={product.id} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition group">
-                <div className="bg-gradient-to-br from-[#EC008C] to-[#00B4D8] h-48 flex items-center justify-center text-8xl group-hover:scale-110 transition">
-                  {product.image}
+            {displayedProducts.map(product => (
+              <div
+                key={product.id}
+                className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition group"
+              >
+                {/* IMAGE */}
+                <div className="h-48 overflow-hidden">
+                  <img
+                    src={product.image}
+                    alt={product.nama_produk}
+                    className="w-full h-full object-cover group-hover:scale-110 transition"
+                  />
                 </div>
+
+                {/* CONTENT */}
                 <div className="p-6">
-                  <div className="text-xs text-[#00B4D8] font-semibold mb-2">{product.category}</div>
-                  <h3 className="font-bold text-lg mb-2">{product.name}</h3>
+                  <div className="text-xs text-[#00B4D8] font-semibold mb-2 capitalize">
+                    {product.tipe}
+                  </div>
+
+                  <h3 className="font-bold text-lg mb-2">
+                    {product.nama_produk}
+                  </h3>
+
                   <div className="flex justify-between items-center">
-                    <span className="text-[#EC008C] font-bold text-xl">{product.price}</span>
+                    <span className="text-[#EC008C] font-bold text-xl">
+                      Rp {product.harga}
+                    </span>
+
                     <button className="bg-[#EC008C] text-white px-4 py-2 rounded-lg text-sm hover:bg-[#d0007a] transition">
                       Order
                     </button>
@@ -386,90 +462,156 @@ export default function Home() {
             ))}
           </div>
 
-          <div className="text-center mt-10">
-            <button className="bg-[#00B4D8] text-white px-8 py-3 rounded-full hover:bg-[#0096b8] transition">
+          {/* LIHAT SEMUA */}
+          {products.length > 4 && (
+        <div className="text-center mt-10">
+          {!showAll ? (
+            <button
+              onClick={() => setShowAll(true)}
+              className="bg-[#00B4D8] text-white px-8 py-3 rounded-full hover:bg-[#0096b8] transition"
+            >
               Lihat Semua Produk
             </button>
-          </div>
+          ) : (
+            <button
+              onClick={() => setShowAll(false)}
+              className="bg-gray-200 text-gray-700 px-8 py-3 rounded-full hover:bg-gray-300 transition"
+            >
+              Tampilkan Lebih Sedikit
+            </button>
+          )}
+        </div>
+          )}
         </div>
       </section>
 
       {/* DON'T WAIT CTA */}
-      <section className="py-16 bg-gradient-to-r from-[#00B4D8] to-[#0096b8] text-white">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row items-center justify-between">
-            <div className="mb-6 md:mb-0">
-              <h3 className="text-3xl font-bold mb-2">Don't Learned More</h3>
-              <p className="text-gray-100">Curious About IT? Join us today.</p>
+<section className="py-16 bg-gradient-to-r from-[#00B4D8] to-[#0096b8] text-white">
+  <div className="container mx-auto px-4">
+    <div className="flex flex-col md:flex-row items-center justify-between">
+      <div className="mb-6 md:mb-0">
+        <h3 className="text-3xl font-bold mb-2">
+          Rasakan Sensasi Pedas Favoritmu
+        </h3>
+        <p className="text-gray-100">
+          Mie Gacoan siap menemani momen makanmu bersama teman dan keluarga.
+        </p>
             </div>
-            <div className="flex space-x-4">
-              <button className="bg-white text-[#00B4D8] px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition">
-                Contact Now
-              </button>
-              <button className="border-2 border-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-[#00B4D8] transition">
-                Learn More
-              </button>
+              <div className="flex space-x-4">
+                <a
+                href="https://www.antaranews.com/berita/4195941/lokasi-mie-gacoan-di-berbagai-daerah-ini-daftar-dan-jam-operasinya"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-white text-[#00B4D8] px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition"
+              >
+                Lihat Lokasi Outlet
+              </a>
+
+
+                <a
+                  href="#products"
+                  className="border-2 border-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-[#00B4D8] transition"
+                >
+                  Lihat Menu
+                </a>
             </div>
           </div>
         </div>
       </section>
-
-      {/* GALLERY FOTO - dari database */}
-      <section id="gallery" className="py-16 bg-white">
+      
+      {/* GALLERY FOTO */}
+      <section id="gallery" className="py-20 bg-gray-50">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-800 mb-4">Gallery Foto</h2>
-            <p className="text-gray-600">Dokumentasi kegiatan dan suasana outlet kami</p>
+
+          {/* HEADER */}
+          <div className="text-center mb-14">
+            <h2 className="text-4xl font-bold text-gray-800 mb-4">
+              Galeri Outlet Mie Gacoan
+            </h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Dokumentasi suasana outlet, menu favorit, dan momen kebersamaan pelanggan
+              di berbagai cabang Mie Gacoan di Indonesia.
+            </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6">
-            {gallery.map(item => (
-              <div key={item.id} className="relative group overflow-hidden rounded-xl shadow-lg">
-                <div className="bg-gradient-to-br from-[#EC008C] to-[#00B4D8] h-64 flex items-center justify-center text-9xl group-hover:scale-110 transition duration-300">
-                  {item.image}
-                </div>
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-6 text-white">
-                  <h4 className="font-bold text-lg">{item.title}</h4>
+          {/* GRID FOTO */}
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {galeri.map(item => (
+              <div
+                key={item.id}
+                className="relative group overflow-hidden rounded-2xl shadow-lg bg-white"
+              >
+                <img
+                  src={item.file_gambar}
+                  alt={item.judul}
+                  className="w-full h-64 object-cover group-hover:scale-110 transition duration-300"
+                />
+
+                {/* Overlay */}
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition"></div>
+
+                {/* Caption */}
+                <div className="absolute bottom-0 left-0 right-0 p-5 text-white opacity-0 group-hover:opacity-100 transition">
+                  <h4 className="font-bold text-lg">{item.judul}</h4>
+                  {item.deskripsi && (
+                    <p className="text-sm text-gray-200 mt-1">
+                      {item.deskripsi}
+                    </p>
+                  )}
                 </div>
               </div>
             ))}
           </div>
 
-          <div className="text-center mt-10">
+          {/* BUTTON */}
+          <div className="text-center mt-14">
             <button className="bg-[#EC008C] text-white px-8 py-3 rounded-full hover:bg-[#d0007a] transition">
-              Lihat Lebih Banyak
-            </button>
+                    Lihat Lebih Banyak
+                  </button>
           </div>
+
         </div>
       </section>
 
-      {/* DAFTAR KLIEN - dari database */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
+      {/* DAFTAR Partners - dari database */}
+      <section id="partners" className="py-16 bg-[#F7F2FA]">
+        <div className="max-w-6xl mx-auto px-4">
+
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-800 mb-4">Partner & Klien Kami</h2>
-            <p className="text-gray-600">Dipercaya oleh brand-brand ternama</p>
+            <h2 className="text-4xl font-bold text-gray-800 mb-4">
+              Partner Kami
+            </h2>
+            <p className="text-gray-600">
+              Dipercaya oleh berbagai brand
+            </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {clients.map(client => (
-              <div key={client.id} className="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition flex flex-col items-center justify-center">
-                <div className="text-6xl mb-3">{client.logo}</div>
-                <h4 className="font-bold text-gray-700">{client.name}</h4>
-              </div>
-            ))}
-          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-14">
+  {partners.map(partner => (
+    <div
+      key={partner.id}
+      className="bg-white px-10 py-12 rounded-3xl 
+                 shadow-xl flex flex-col items-center justify-center
+                 hover:shadow-2xl hover:-translate-y-3 
+                 transition duration-300"
+    >
+      <div className="w-full h-36 flex items-center justify-center mb-6">
+        <img
+          src={partner.logo}
+          alt={partner.nama}
+          className="max-h-32 object-contain"
+        />
+      </div>
 
-          <div className="grid grid-cols-3 md:grid-cols-6 gap-4 mt-8 opacity-60">
-            <div className="bg-white p-4 rounded-lg text-center text-2xl">🏢</div>
-            <div className="bg-white p-4 rounded-lg text-center text-2xl">🏪</div>
-            <div className="bg-white p-4 rounded-lg text-center text-2xl">🏬</div>
-            <div className="bg-white p-4 rounded-lg text-center text-2xl">🏭</div>
-            <div className="bg-white p-4 rounded-lg text-center text-2xl">🏗️</div>
-            <div className="bg-white p-4 rounded-lg text-center text-2xl">🏛️</div>
-          </div>
-        </div>
-      </section>
+      <p className="font-bold text-xl text-gray-800 text-center">
+        {partner.nama}
+      </p>
+    </div>
+  ))}
+</div>
+  </div>
+</section>
+
 
       {/* TESTIMONIAL */}
       <section className="py-16 bg-gradient-to-r from-[#2C3E50] to-[#34495E] text-white">
@@ -512,7 +654,7 @@ export default function Home() {
       </section>
 
       {/* ARTIKEL - dari database */}
-      <section className="py-16 bg-white">
+      <section id="artikel" className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center mb-12">
             <div>
@@ -549,7 +691,7 @@ export default function Home() {
       </section>
 
       {/* EVENT - dari database */}
-      <section className="py-16 bg-gray-50">
+      <section id="event" className="py-16 bg-gradient-to-b from-[#E6F7FB] to-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold text-gray-800 mb-4">Event & Kegiatan</h2>
