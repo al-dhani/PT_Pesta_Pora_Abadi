@@ -6,7 +6,7 @@ const AdminSidebar = () => {
   const menus = [
     { name: "Articles", table: "articles" },
     { name: "Partners", table: "partners" },
-    { name: "Events", table: "events" },
+    { name: "Event", table: "event" },
     { name: "Gallery", table: "gallery" },
     { name: "Products", table: "products" },
   ];

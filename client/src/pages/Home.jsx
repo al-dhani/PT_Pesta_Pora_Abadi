@@ -46,12 +46,6 @@ useEffect(() => {
     { id: 3, title: "Franchise Mie Gacoan: Peluang Bisnis 2026", date: "18 Jan 2026", category: "Bisnis", image: "📝" }
   ];
 
-  // Data dummy untuk event (nanti diambil dari database)
-  const events = [
-    { id: 1, title: "Grand Opening Cabang Baru", date: "15 Feb 2026", location: "Jakarta Selatan", image: "🎉" },
-    { id: 2, title: "Workshop Barista Training", date: "20 Feb 2026", location: "Head Office", image: "☕" },
-    { id: 3, title: "Mie Gacoan Festival 2026", date: "1 Mar 2026", location: "Surabaya", image: "🎪" }
-  ];
 
   const menuFavorites = [
   {
@@ -75,6 +69,19 @@ useEffect(() => {
     image: "/images/esgobaksodor.png",
   },
 ];
+
+const JUMLAH_GALERI_AWAL = 6;
+const [showAllGallery, setShowAllGallery] = useState(false);
+
+const [events, setEvents] = useState([]);
+
+useEffect(() => {
+  fetch("http://localhost:5000/api/event")
+    .then(res => res.json())
+    .then(data => setEvents(data))
+    .catch(err => console.error("Gagal ambil event:", err));
+}, []);
+
 
 
   return (
@@ -468,7 +475,7 @@ useEffect(() => {
           {!showAll ? (
             <button
               onClick={() => setShowAll(true)}
-              className="bg-[#00B4D8] text-white px-8 py-3 rounded-full hover:bg-[#0096b8] transition"
+              className="bg-[#EC008C] text-white px-8 py-3 rounded-full hover:bg-[#0096b8] transition"
             >
               Lihat Semua Produk
             </button>
@@ -506,8 +513,6 @@ useEffect(() => {
               >
                 Lihat Lokasi Outlet
               </a>
-
-
                 <a
                   href="#products"
                   className="border-2 border-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-[#00B4D8] transition"
@@ -536,7 +541,8 @@ useEffect(() => {
 
           {/* GRID FOTO */}
           <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
-            {galeri.map(item => (
+            {(showAllGallery ? galeri : galeri.slice(0, JUMLAH_GALERI_AWAL)).map(item => (
+
               <div
                 key={item.id}
                 className="relative group overflow-hidden rounded-2xl shadow-lg bg-white"
@@ -564,12 +570,25 @@ useEffect(() => {
           </div>
 
           {/* BUTTON */}
-          <div className="text-center mt-14">
-            <button className="bg-[#EC008C] text-white px-8 py-3 rounded-full hover:bg-[#d0007a] transition">
-                    Lihat Lebih Banyak
-                  </button>
-          </div>
-
+          {galeri.length > JUMLAH_GALERI_AWAL && (
+  <div className="text-center mt-14">
+    {!showAllGallery ? (
+      <button
+        onClick={() => setShowAllGallery(true)}
+        className="bg-[#EC008C] text-white px-8 py-3 rounded-full hover:bg-[#d0007a] transition"
+      >
+        Lihat Lebih Banyak
+      </button>
+    ) : (
+      <button
+        onClick={() => setShowAllGallery(false)}
+        className="bg-gray-200 text-gray-700 px-8 py-3 rounded-full hover:bg-gray-300 transition"
+      >
+        Tampilkan Lebih Sedikit
+      </button>
+    )}
+  </div>
+)}
         </div>
       </section>
 
@@ -700,22 +719,59 @@ useEffect(() => {
 
           <div className="grid md:grid-cols-3 gap-8">
             {events.map(event => (
-              <div key={event.id} className="bg-white rounded-xl shadow-lg overflow-hidden hover:transform hover:scale-105 transition">
-                <div className="bg-gradient-to-br from-[#00B4D8] to-[#0096b8] h-40 flex items-center justify-center text-8xl">
-                  {event.image}
-                </div>
-                <div className="p-6">
-                  <div className="bg-[#EC008C] text-white inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3">
-                    {event.date}
-                  </div>
-                  <h3 className="font-bold text-xl mb-2">{event.title}</h3>
-                  <p className="text-gray-600 text-sm mb-4">📍 {event.location}</p>
-                  <button className="w-full bg-gradient-to-r from-[#EC008C] to-[#00B4D8] text-white py-2 rounded-lg hover:opacity-90 transition">
-                    Daftar Sekarang
-                  </button>
-                </div>
-              </div>
-            ))}
+  <div
+    key={event.id}
+    className="bg-white rounded-xl shadow-lg overflow-hidden hover:transform hover:scale-105 transition"
+  >
+    {/* IMAGE */}
+    <div className="h-40 overflow-hidden bg-gray-200">
+      {event.gambar ? (
+        <img
+          src={event.gambar}
+          alt={event.judul}
+          className="w-full h-full object-cover"
+        />
+      ) : (
+        <div className="flex items-center justify-center h-full text-5xl">
+          🎉
+        </div>
+      )}
+    </div>
+
+    <div className="p-6">
+      {/* TANGGAL */}
+      <div className="bg-[#EC008C] text-white inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3">
+        {new Date(event.tanggal).toLocaleDateString("id-ID", {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        })}
+      </div>
+
+      {/* JUDUL */}
+      <h3 className="font-bold text-xl mb-2">
+        {event.judul}
+      </h3>
+
+      {/* LOKASI */}
+      <p className="text-gray-600 text-sm mb-2">
+        📍 {event.lokasi}
+      </p>
+
+      {/* DESKRIPSI */}
+      {event.deskripsi && (
+        <p className="text-gray-500 text-sm mb-4 line-clamp-3">
+          {event.deskripsi}
+        </p>
+      )}
+
+      <button className="w-full bg-gradient-to-r from-[#EC008C] to-[#00B4D8] text-white py-2 rounded-lg hover:opacity-90 transition">
+        Lihat Detail
+      </button>
+    </div>
+  </div>
+))}
+
           </div>
         </div>
       </section>
