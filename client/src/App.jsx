@@ -20,7 +20,6 @@ export default function App() {
           <Layout>
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/artikel" element={<Artikel />} />
             </Routes>
           </Layout>
         }
@@ -32,7 +31,8 @@ export default function App() {
       <Route path="/admin/products" element={<Produk />} />
       <Route path="/admin/gallery" element={<Galeri />} />
       <Route path="/admin/partners" element={<Partners />} />
-<Route path="/admin/event" element={<Event />} />
+      <Route path="/admin/event" element={<Event />} />
+      <Route path="/admin/articles" element={<Artikel />} />
 
     </Routes>
   );
