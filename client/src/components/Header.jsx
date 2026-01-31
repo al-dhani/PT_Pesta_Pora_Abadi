@@ -25,7 +25,7 @@ export default function Header({ onMenuClick }) {
           <a href="#home" className="hover:text-[#EC008C]">Home</a>
           <a href="#about" className="hover:text-[#EC008C]">About</a>
           <a href="#visimisi" className="hover:text-[#EC008C]">Visi&Misi</a>
-          <a href="#profile" className="hover:text-[#EC008C]">Profile</a>
+          <a href="#about" className="hover:text-[#EC008C]">Profile</a>
           <a href="#products" className="hover:text-[#EC008C]">Produk</a>
           <a href="#gallery" className="hover:text-[#EC008C]">Gallery</a>
           <a href="#contact" className="hover:text-[#EC008C]">Kontak</a>
