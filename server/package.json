@@ -11,20 +11,13 @@
   "description": "",
   "dependencies": {
     "bcryptjs": "^3.0.3",
-<<<<<<< HEAD
     "body-parser": "^2.2.2",
-=======
->>>>>>> 144516fcbaeec5033458e4a6f0881bc2843464bd
     "cors": "^2.8.6",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
-<<<<<<< HEAD
     "midtrans-client": "^1.4.3",
     "mysql2": "^3.16.1"
-=======
-    "mysql2": "^3.16.2"
->>>>>>> 144516fcbaeec5033458e4a6f0881bc2843464bd
   },
   "devDependencies": {
     "nodemon": "^3.1.11"

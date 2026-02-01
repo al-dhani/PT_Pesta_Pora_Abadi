@@ -79,11 +79,14 @@ export default function Home() {
       .catch(err => console.error("Gagal ambil partners:", err));
   }, []);
 
-  const articles = [
-    { id: 1, title: "Tips Menikmati Mie Pedas Level 10", date: "22 Jan 2026", category: "Tips", image: "📝" },
-    { id: 2, title: "Resep Rahasia Bumbu Mie Gacoan", date: "20 Jan 2026", category: "Resep", image: "📝" },
-    { id: 3, title: "Franchise Mie Gacoan: Peluang Bisnis 2026", date: "18 Jan 2026", category: "Bisnis", image: "📝" }
-  ];
+  const [articles, setArticles] = useState([]);
+  useEffect(() => {
+  fetch("http://localhost:5000/api/artikel")
+    .then(res => res.json())
+    .then(data => setArticles(data))
+    .catch(err => console.error("Gagal ambil artikel:", err));
+}, []);
+
 
   const menuFavorites = [
     {
@@ -230,7 +233,7 @@ export default function Home() {
             {/* Left: Story */}
             <div className="space-y-6">
               <div className="bg-white rounded-3xl p-8 shadow-xl border border-gray-100">
-                <h3 className="text-3xl font-bold text-gray-900 mb-4">Sejak 2016</h3>
+                <h3 className="text-3xl font-bold text-gray-900 mb-4">Tentang Kami</h3>
                 <p className="text-gray-700 leading-relaxed mb-4">
                   <strong className="text-[#EC008C]">Mie Gacoan</strong> merupakan brand kuliner di bawah naungan
                   <strong> PT Pesta Pora Abadi</strong> yang didirikan pada tahun 2016 di Malang, Jawa Timur.
@@ -267,7 +270,7 @@ export default function Home() {
             <div className="bg-gradient-to-br from-[#EC008C] to-[#00B4D8] rounded-3xl p-10 text-white shadow-2xl">
               <h4 className="text-3xl font-black mb-8 flex items-center gap-3">
                 <span className="w-3 h-3 bg-white rounded-full animate-pulse"></span>
-                Milestone Kami
+                Sejarah Singkat
               </h4>
               <div className="space-y-6">
                 {[
@@ -821,10 +824,25 @@ export default function Home() {
                     </p>
                   )}
 
-                  <button className="w-full bg-gradient-to-r from-[#EC008C] to-[#00B4D8] text-white 
-                    py-3 rounded-full font-bold hover:shadow-lg hover:scale-105 transition-all duration-300">
-                    Lihat Detail
-                  </button>
+                  {event.link ? (
+  <a
+    href={event.link}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="block text-center w-full bg-gradient-to-r from-[#EC008C] to-[#00B4D8] text-white 
+      py-3 rounded-full font-bold hover:shadow-lg hover:scale-105 transition-all duration-300"
+  >
+    Lihat Detail
+  </a>
+) : (
+  <button
+    disabled
+    className="w-full bg-gray-300 text-gray-500 py-3 rounded-full font-bold cursor-not-allowed"
+  >
+    Lihat Detail
+  </button>
+)}
+
                 </div>
               </div>
             ))}
@@ -852,36 +870,54 @@ export default function Home() {
 
           <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto">
             {articles.map(article => (
-              <div
-                key={article.id}
-                className="group bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl 
-                  transition-all duration-300 hover:-translate-y-2"
-              >
-                <div className="bg-gradient-to-br from-[#EC008C] to-[#8B2C7E] h-56 flex items-center 
-                  justify-center text-9xl group-hover:scale-110 transition-transform duration-500">
-                  {article.image}
-                </div>
-                <div className="p-6">
-                  <div className="flex items-center gap-4 mb-4">
-                    <span className="bg-[#00B4D8] text-white px-4 py-1 rounded-full text-xs font-bold">
-                      {article.category}
-                    </span>
-                    <span className="text-sm text-gray-500">📅 {article.date}</span>
-                  </div>
-                  <h3 className="font-black text-xl mb-4 line-clamp-2 text-gray-900 
-                    group-hover:text-[#EC008C] transition-colors">
-                    {article.title}
-                  </h3>
-                  <button className="text-[#EC008C] font-bold hover:gap-2 flex items-center gap-1 
-                    transition-all group">
-                    Baca Selengkapnya
-                    <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </button>
-                </div>
-              </div>
-            ))}
+  <div
+    key={article.id}
+    className="group bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl 
+      transition-all duration-300 hover:-translate-y-2"
+  >
+    {/* THUMBNAIL */}
+    <div className="h-56 overflow-hidden">
+      <img
+        src={article.thumbnail}
+        alt={article.judul}
+        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+      />
+    </div>
+
+    <div className="p-6">
+      <div className="flex items-center gap-4 mb-4">
+        <span className="bg-[#00B4D8] text-white px-4 py-1 rounded-full text-xs font-bold">
+          {article.penulis}
+        </span>
+        <span className="text-sm text-gray-500">
+          📅 {article.created_at.slice(0, 10)}
+        </span>
+      </div>
+
+      <h3 className="font-black text-xl mb-4 line-clamp-2 text-gray-900 
+        group-hover:text-[#EC008C] transition-colors">
+        {article.judul}
+      </h3>
+
+      <a
+        href={article.slug}
+        target="_blank"
+        className="text-[#EC008C] font-bold hover:gap-2 flex items-center gap-1 transition-all"
+      >
+        Baca Selengkapnya
+        <svg
+          className="w-4 h-4 group-hover:translate-x-1 transition-transform"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        </svg>
+      </a>
+    </div>
+  </div>
+))}
+
           </div>
         </div>
       </section>
@@ -1016,7 +1052,7 @@ export default function Home() {
             <div>
               <h4 className="font-black text-white text-lg mb-6">Quick Links</h4>
               <ul className="space-y-3">
-                {['Tentang Kami', 'Produk', 'Gallery', 'Kontak'].map((link, idx) => (
+                {['About', 'Products', 'Gallery', 'Contact'].map((link, idx) => (
                   <li key={idx}>
                     <a href={`#${link.toLowerCase().replace(' ', '')}`}
                       className="hover:text-[#EC008C] transition-colors flex items-center gap-2 group">

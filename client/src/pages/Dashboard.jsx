@@ -13,7 +13,7 @@ const Dashboard = () => {
   const menus = [
     { name: "Articles", table: "articles", color: "bg-blue-500" },
     { name: "Partners", table: "partners", color: "bg-green-500" },
-    { name: "Events", table: "events", color: "bg-purple-500" },
+    { name: "Events", table: "event", color: "bg-purple-500" },
     { name: "Gallery", table: "gallery", color: "bg-pink-500" },
     { name: "Products", table: "products", color: "bg-orange-500" },
   ];
