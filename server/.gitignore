@@ -1,1 +1,6 @@
+# environment
 .env
+server/.env
+
+# node
+node_modules
