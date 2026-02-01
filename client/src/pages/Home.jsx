@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
+import axios from "axios";
+
 
 export default function Home() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [showAll, setShowAll] = useState(false);
-  
+
   const [products, setProducts] = useState([]);
   useEffect(() => {
     fetch("http://localhost:5000/api/produk")
@@ -15,6 +17,47 @@ export default function Home() {
         console.error("Gagal ambil data produk:", err);
       });
   }, []);
+
+  const handlePayment = async (product) => {
+    try {
+      // 1. Request token ke backend
+      const res = await axios.post("http://localhost:5000/api/checkout", {
+        orderId: `INV-${Date.now()}`, // ID unik
+        grossAmount: product.harga, // total bayar
+        customer: {
+          firstName: "Alif",
+          lastName: "Ramadhani",
+          email: "alif@example.com",
+          phone: "081234567890",
+        },
+      });
+
+      const token = res.data.token;
+
+      // 2. Panggil Snap popup
+      window.snap.pay(token, {
+        onSuccess: function (result) {
+          console.log("success:", result);
+          alert("Pembayaran berhasil!");
+        },
+        onPending: function (result) {
+          console.log("pending:", result);
+          alert("Pembayaran pending!");
+        },
+        onError: function (result) {
+          console.log("error:", result);
+          alert("Terjadi kesalahan pembayaran!");
+        },
+        onClose: function () {
+          console.log("popup closed");
+          alert("Anda menutup popup tanpa membayar");
+        },
+      });
+    } catch (err) {
+      console.error(err);
+      alert("Gagal membuat transaksi!");
+    }
+  };
 
   const displayedProducts = showAll
     ? products
@@ -189,16 +232,16 @@ export default function Home() {
               <div className="bg-white rounded-3xl p-8 shadow-xl border border-gray-100">
                 <h3 className="text-3xl font-bold text-gray-900 mb-4">Sejak 2016</h3>
                 <p className="text-gray-700 leading-relaxed mb-4">
-                  <strong className="text-[#EC008C]">Mie Gacoan</strong> merupakan brand kuliner di bawah naungan 
+                  <strong className="text-[#EC008C]">Mie Gacoan</strong> merupakan brand kuliner di bawah naungan
                   <strong> PT Pesta Pora Abadi</strong> yang didirikan pada tahun 2016 di Malang, Jawa Timur.
                 </p>
                 <p className="text-gray-700 leading-relaxed mb-4">
-                  Kami menghadirkan konsep mie pedas modern dengan harga terjangkau yang menyasar generasi muda Indonesia, 
+                  Kami menghadirkan konsep mie pedas modern dengan harga terjangkau yang menyasar generasi muda Indonesia,
                   dengan menu yang bervariasi dan suasana yang kekinian.
                 </p>
                 <p className="text-gray-700 leading-relaxed">
-                  Berawal dari satu outlet kecil, kini Mie Gacoan telah berkembang menjadi salah satu brand kuliner 
-                  terbesar di Indonesia dengan lebih dari <strong className="text-[#00B4D8]">500+ outlet</strong> yang 
+                  Berawal dari satu outlet kecil, kini Mie Gacoan telah berkembang menjadi salah satu brand kuliner
+                  terbesar di Indonesia dengan lebih dari <strong className="text-[#00B4D8]">500+ outlet</strong> yang
                   tersebar di berbagai kota.
                 </p>
               </div>
@@ -269,7 +312,7 @@ export default function Home() {
               <div className="text-6xl mb-6">🎯</div>
               <h3 className="text-3xl font-black text-[#EC008C] mb-6">Visi Kami</h3>
               <p className="text-gray-700 leading-relaxed text-lg">
-                Menjadi brand mie pedas nomor satu pilihan masyarakat Indonesia yang dikenal dengan 
+                Menjadi brand mie pedas nomor satu pilihan masyarakat Indonesia yang dikenal dengan
                 kualitas terbaik, harga terjangkau, dan pelayanan yang memuaskan di setiap outlet kami.
               </p>
             </div>
@@ -422,6 +465,7 @@ export default function Home() {
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+            
             {displayedProducts.map(product => (
               <div
                 key={product.id}
@@ -445,7 +489,7 @@ export default function Home() {
                 {/* Content */}
                 <div className="p-6">
                   <h3 className="font-black text-xl mb-3 text-gray-900">{product.nama_produk}</h3>
-                  
+
                   <div className="flex justify-between items-center">
                     <div>
                       <div className="text-xs text-gray-500 mb-1">Harga</div>
@@ -454,8 +498,11 @@ export default function Home() {
                       </span>
                     </div>
 
-                    <button className="bg-gradient-to-r from-[#EC008C] to-[#C4007A] text-white px-6 py-3 
-                      rounded-full font-bold hover:shadow-lg hover:scale-105 transition-all duration-300">
+                    <button
+                      onClick={() => handlePayment(product)}
+                      className="bg-gradient-to-r from-[#EC008C] to-[#C4007A] text-white px-6 py-3 
+    rounded-full font-bold hover:shadow-lg hover:scale-105 transition-all duration-300"
+                    >
                       Order
                     </button>
                   </div>
@@ -537,7 +584,7 @@ export default function Home() {
               Outlet <span className="text-[#EC008C]">Mie Gacoan</span>
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Dokumentasi suasana outlet, menu favorit, dan momen kebersamaan pelanggan 
+              Dokumentasi suasana outlet, menu favorit, dan momen kebersamaan pelanggan
               di berbagai cabang Mie Gacoan
             </p>
           </div>
@@ -742,7 +789,7 @@ export default function Home() {
                       🎉
                     </div>
                   )}
-                  
+
                   {/* Date Badge */}
                   <div className="absolute top-4 left-4">
                     <div className="bg-white rounded-2xl p-3 shadow-lg text-center">
@@ -971,7 +1018,7 @@ export default function Home() {
               <ul className="space-y-3">
                 {['Tentang Kami', 'Produk', 'Gallery', 'Kontak'].map((link, idx) => (
                   <li key={idx}>
-                    <a href={`#${link.toLowerCase().replace(' ', '')}`} 
+                    <a href={`#${link.toLowerCase().replace(' ', '')}`}
                       className="hover:text-[#EC008C] transition-colors flex items-center gap-2 group">
                       <span className="w-0 h-0.5 bg-[#EC008C] group-hover:w-4 transition-all duration-300"></span>
                       {link}

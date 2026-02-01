@@ -7,6 +7,7 @@ import artikelRoutes from "./routes/eventRoutes.js";
 import partnersRoutes from "./routes/partnersRoutes.js";
 import galeriRoutes from "./routes/galeriRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
+import checkoutRoutes from './routes/checkoutRoutes.js'
 
 dotenv.config();
 const app = express();
@@ -21,6 +22,7 @@ app.use("/api/artikel", artikelRoutes);
 app.use("/api/partners", partnersRoutes);
 app.use("/api/galeri", galeriRoutes);
 app.use("/api/admin", adminRoutes);
+app.use('/api/checkout', checkoutRoutes )
 
 // jalankan server
 const PORT = process.env.PORT || 5000;
