@@ -22,7 +22,7 @@ app.use("/api/artikel", artikelRoutes);
 app.use("/api/partners", partnersRoutes);
 app.use("/api/galeri", galeriRoutes);
 app.use("/api/admin", adminRoutes);
-app.use('/api/checkout', checkoutRoutes )
+app.use('/api/checkout', checkoutRoutes );
 
 // jalankan server
 const PORT = process.env.PORT || 5000;
