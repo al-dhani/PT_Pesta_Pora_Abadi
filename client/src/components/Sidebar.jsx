@@ -168,7 +168,7 @@ export default function Sidebar({ isOpen, onClose }) {
           {/* ===== Footer ===== */}
           <div className="px-6 py-5 bg-white/10 backdrop-blur-md border-t border-white/20">
             <div className="flex items-center gap-3 text-white/90 text-sm">
-              <span>© 2025 GaComp</span>
+              <span>© 2025 MiCan</span>
             </div>
           </div>
 

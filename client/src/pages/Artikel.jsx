@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import AdminLayout from "../layouts/AdminLayout";
 
+// Import React Icons
+import { FaRegNewspaper, FaPlus, FaEdit, FaClipboardCheck, FaCheck } from "react-icons/fa";
+import { IoClose } from "react-icons/io5";
+
 const Artikel = () => {
   const [artikels, setArtikels] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -98,7 +102,7 @@ const Artikel = () => {
             <div>
               <div className="flex items-center gap-3 mb-2">
                 <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center text-3xl">
-                  📝
+                  <FaRegNewspaper className="text-white" size={28} />
                 </div>
                 <h1 className="text-3xl md:text-4xl font-bold">
                   Manajemen Artikel
@@ -122,31 +126,29 @@ const Artikel = () => {
               }}
               className="bg-white text-[#EC008C] px-6 py-3 rounded-xl font-bold hover:bg-gray-100 transition-all duration-300 flex items-center gap-2 shadow-lg hover:shadow-xl hover:scale-105 group"
             >
-              <svg className="w-5 h-5 group-hover:rotate-90 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-              </svg>
+              <FaPlus className="group-hover:rotate-90 transition-transform" />
               <span>Tambah Artikel</span>
             </button>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-          <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
-            <p className="text-white/80 text-sm mb-1">Total Artikel</p>
-            <p className="text-3xl font-bold">{artikels.length}</p>
-          </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
+              <p className="text-white/80 text-sm mb-1">Total Artikel</p>
+              <p className="text-3xl font-bold">{artikels.length}</p>
+            </div>
 
-          <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
-            <p className="text-white/80 text-sm mb-1">Artikel Aktif</p>
-            <p className="text-3xl font-bold">{artikels.length}</p>
-          </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
+              <p className="text-white/80 text-sm mb-1">Artikel Aktif</p>
+              <p className="text-3xl font-bold">{artikels.length}</p>
+            </div>
 
-          <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
-            <p className="text-white/80 text-sm mb-1">Artikel Terbaru</p>
-            <p className="text-3xl font-bold">
-              {artikels.length > 0 ? 1 : 0}
-            </p>
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
+              <p className="text-white/80 text-sm mb-1">Artikel Terbaru</p>
+              <p className="text-3xl font-bold">
+                {artikels.length > 0 ? 1 : 0}
+              </p>
+            </div>
           </div>
-        </div>
         </div>
 
         {/* TABLE SECTION */}
@@ -154,7 +156,7 @@ const Artikel = () => {
           {/* Table Header */}
           <div className="bg-gradient-to-r from-gray-50 to-gray-100 px-6 py-4 border-b border-gray-200">
             <h2 className="text-lg font-bold text-gray-800 flex items-center gap-2">
-              <span className="text-2xl">📋</span>
+              <FaClipboardCheck className="text-2xl" />
               Daftar Artikel
             </h2>
           </div>
@@ -227,18 +229,14 @@ const Artikel = () => {
                             }}
                             className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-2 rounded-xl font-semibold hover:from-blue-600 hover:to-blue-700 transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105 flex items-center gap-1"
                           >
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                            </svg>
+                            <FaEdit className="w-4 h-4" />
                             <span>Edit</span>
                           </button>
                           <button
                             onClick={() => handleDelete(item.id)}
                             className="bg-gradient-to-r from-red-500 to-red-600 text-white px-4 py-2 rounded-xl font-semibold hover:from-red-600 hover:to-red-700 transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105 flex items-center gap-1"
                           >
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                            </svg>
+                            <FaRegNewspaper className="w-4 h-4" />
                             <span>Hapus</span>
                           </button>
                         </div>
@@ -261,7 +259,7 @@ const Artikel = () => {
               <div className="flex items-center justify-between text-white">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center text-2xl">
-                    {isEdit ? "✏️" : "➕"}
+                    {isEdit ? <FaEdit size={20} /> : <FaPlus size={20} />}
                   </div>
                   <h2 className="text-2xl font-bold">
                     {isEdit ? "Edit Artikel" : "Tambah Artikel Baru"}
@@ -271,9 +269,7 @@ const Artikel = () => {
                   onClick={() => setShowModal(false)}
                   className="w-8 h-8 bg-white/20 hover:bg-white/30 rounded-lg flex items-center justify-center transition-all"
                 >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
+                  <IoClose size={20} />
                 </button>
               </div>
             </div>
@@ -373,9 +369,7 @@ const Artikel = () => {
                   onClick={handleSubmit}
                   className="bg-gradient-to-r from-[#EC008C] to-[#00BCD4] text-white px-6 py-3 rounded-xl font-bold hover:from-[#ff1a9e] hover:to-[#00d4e8] transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 flex items-center gap-2"
                 >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
+                  <FaCheck />
                   <span>{isEdit ? "Simpan Perubahan" : "Tambah Artikel"}</span>
                 </button>
               </div>

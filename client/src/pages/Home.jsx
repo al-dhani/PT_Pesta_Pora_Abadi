@@ -1,10 +1,22 @@
 import { useState, useEffect } from 'react';
 import axios from "axios";
+import { FaMapMarkerAlt } from "react-icons/fa";
+import { GiNoodles } from "react-icons/gi";
+import {FaFacebookF,FaInstagram,FaTwitter,FaTiktok,
+} from "react-icons/fa";
+
+import emailjs from "@emailjs/browser";
 
 
 export default function Home() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [showAll, setShowAll] = useState(false);
+  const [nama, setNama] = useState("");
+const [email, setEmail] = useState("");
+const [telp, setTelp] = useState("");
+const [pesan, setPesan] = useState("");
+
+
 
   const [products, setProducts] = useState([]);
   useEffect(() => {
@@ -163,7 +175,7 @@ export default function Home() {
 
       {/* Main Heading - Super Bold */}
       <h1 className="text-5xl md:text-7xl lg:text-8xl font-black leading-none mb-8 text-white animate-slide-up">
-        GaComp
+        MiCan
         <br />
         <span className="relative inline-block mt-2">
           <span className="bg-gradient-to-r from-[#EC008C] via-[#FF1493] to-[#00B4D8] bg-clip-text text-transparent animate-gradient">
@@ -194,7 +206,7 @@ export default function Home() {
             Sensasi mie pedas <span className="font-bold text-[#EC008C]">favorit anak muda</span> dengan harga bersahabat.
           </p>
           <p className="text-lg text-white/80 mt-2">
-            🔥 Hadir di <span className="font-bold text-[#00B4D8]">500+ outlet</span> seluruh Indonesia
+            Hadir di <span className="font-bold text-[#00B4D8]">500+ outlet</span> seluruh Indonesia
           </p>
         </div>
       </div>
@@ -862,6 +874,7 @@ export default function Home() {
 
       {/* CTA SECTION */}
       <section className="py-24 bg-gradient-to-r from-[#00B4D8] to-[#0096B8] text-white relative overflow-hidden">
+        {/* Background blur */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-10 left-10 w-64 h-64 bg-white rounded-full blur-3xl"></div>
           <div className="absolute bottom-10 right-10 w-96 h-96 bg-[#EC008C] rounded-full blur-3xl"></div>
@@ -872,25 +885,34 @@ export default function Home() {
             <h3 className="text-5xl md:text-6xl font-black mb-6">
               Rasakan Sensasi Pedas Favoritmu
             </h3>
+
             <p className="text-xl mb-10 text-white/90">
               Mie Gacoan siap menemani momen makanmu bersama teman dan keluarga
             </p>
+
             <div className="flex flex-wrap gap-4 justify-center">
+              {/* BUTTON LOKASI */}
               <a
                 href="https://www.antaranews.com/berita/4195941/lokasi-mie-gacoan-di-berbagai-daerah-ini-daftar-dan-jam-operasinya"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-white text-[#00B4D8] px-10 py-4 rounded-full font-black text-lg 
-                  hover:bg-gray-100 transition-all duration-300 shadow-2xl hover:scale-105 flex items-center gap-2"
+                className="group bg-white text-[#00B4D8] px-10 py-4 rounded-full font-black text-lg 
+                hover:bg-gray-100 transition-all duration-300 shadow-2xl hover:scale-105 
+                flex items-center gap-3"
               >
-                📍 Lihat Lokasi Outlet
+                <FaMapMarkerAlt className="text-xl group-hover:scale-110 transition-transform" />
+                Lihat Lokasi Outlet
               </a>
+
+              {/* BUTTON MENU */}
               <a
                 href="#products"
-                className="border-2 border-white px-10 py-4 rounded-full font-black text-lg 
-                  hover:bg-white hover:text-[#00B4D8] transition-all duration-300 hover:scale-105"
+                className="group border-2 border-white px-10 py-4 rounded-full font-black text-lg 
+                hover:bg-white hover:text-[#00B4D8] transition-all duration-300 hover:scale-105 
+                flex items-center gap-3"
               >
-                🍜 Lihat Menu
+                <GiNoodles className="text-xl group-hover:rotate-12 transition-transform" />
+                Lihat Menu
               </a>
             </div>
           </div>
@@ -1020,7 +1042,7 @@ export default function Home() {
       <div className="flex items-center gap-4 mb-6">
         <div className="h-px w-14 bg-gradient-to-r from-[#EC008C] to-transparent" />
         <span className="text-white/60 text-sm tracking-widest uppercase">
-          Adit Ngocok
+          Mican
         </span>
       </div>
 
@@ -1290,13 +1312,13 @@ export default function Home() {
                 {
                   icon: "📍",
                   title: "Alamat",
-                  content: ["Jl. Soekarno Hatta No. 123", "Malang, Jawa Timur 65141"],
+                  content: ["Jalan Terusan Sufat 3K No. 141 Kel. Sawojajar", "Kec. Kedungkadang Malang 65139"],
                   color: "from-[#EC008C] to-[#C4007A]"
                 },
                 {
                   icon: "📧",
                   title: "Email",
-                  content: ["info@mie-gacoan.com", "franchise@mie-gacoan.com"],
+                  content: ["alif.ramadhani2007@gmail.com"],
                   color: "from-[#00B4D8] to-[#0096B8]"
                 },
                 {
@@ -1308,7 +1330,7 @@ export default function Home() {
                 {
                   icon: "💬",
                   title: "Social Media",
-                  content: ["Instagram: @mie.gacoan", "TikTok: @miegacoan", "Facebook: Mie Gacoan Official"],
+                  content: ["Instagram: @mie.gacoan", "TikTok: @miegacoanofficial", "Twitter: @mie_gacoan"],
                   color: "from-[#FF6B6B] to-[#D54D4D]"
                 }
               ].map((item, idx) => (
@@ -1330,41 +1352,91 @@ export default function Home() {
             {/* Contact Form */}
             <div className="bg-white text-gray-900 rounded-3xl p-8 shadow-2xl">
               <h3 className="text-3xl font-black mb-6">Kirim Pesan</h3>
-              <form className="space-y-4">
-                <input
-                  type="text"
-                  placeholder="Nama Lengkap"
-                  className="w-full px-6 py-4 border-2 border-gray-200 rounded-2xl 
-                    focus:outline-none focus:ring-2 focus:ring-[#EC008C] focus:border-transparent 
-                    transition-all"
-                />
-                <input
-                  type="email"
-                  placeholder="Email"
-                  className="w-full px-6 py-4 border-2 border-gray-200 rounded-2xl 
-                    focus:outline-none focus:ring-2 focus:ring-[#EC008C] focus:border-transparent 
-                    transition-all"
-                />
-                <input
-                  type="tel"
-                  placeholder="Nomor Telepon"
-                  className="w-full px-6 py-4 border-2 border-gray-200 rounded-2xl 
-                    focus:outline-none focus:ring-2 focus:ring-[#EC008C] focus:border-transparent 
-                    transition-all"
-                />
-                <textarea
-                  placeholder="Pesan Anda"
-                  rows="5"
-                  className="w-full px-6 py-4 border-2 border-gray-200 rounded-2xl 
-                    focus:outline-none focus:ring-2 focus:ring-[#EC008C] focus:border-transparent 
-                    transition-all resize-none"
-                ></textarea>
-                <button className="w-full bg-gradient-to-r from-[#EC008C] to-[#00B4D8] text-white 
-                  py-4 rounded-2xl font-black text-lg hover:shadow-2xl hover:scale-105 
-                  transition-all duration-300">
-                  Kirim Pesan →
-                </button>
-              </form>
+               <form
+    className="space-y-4"
+      onSubmit={(e) => {
+        e.preventDefault();
+
+        emailjs
+          .send(
+            "service_0rrmmus",       // ganti sesuai SERVICE ID lu
+            "template_o1ukrvf",      // ganti sesuai TEMPLATE ID lu
+            {
+              from_name: nama,
+              from_email: email,
+              phone: telp,
+              message: pesan,
+            },
+            "8E8MfU1BGE2NrKGcH"      // PUBLIC KEY
+          )
+          .then(
+            (result) => {
+              console.log(result.text);
+              alert("Pesan berhasil dikirim");
+              setNama("");
+              setEmail("");
+              setTelp("");
+              setPesan("");
+            },
+            (error) => {
+              console.log(error.text);
+              alert("Gagal mengirim pesan");
+            }
+          );
+      }}
+    >
+      <input
+        type="text"
+        placeholder="Nama Lengkap"
+        value={nama}
+        onChange={(e) => setNama(e.target.value)}
+        className="w-full px-6 py-4 border-2 border-gray-200 rounded-2xl 
+          focus:outline-none focus:ring-2 focus:ring-[#EC008C] focus:border-transparent 
+          transition-all"
+        required
+      />
+
+      <input
+        type="email"
+        placeholder="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        className="w-full px-6 py-4 border-2 border-gray-200 rounded-2xl 
+          focus:outline-none focus:ring-2 focus:ring-[#EC008C] focus:border-transparent 
+          transition-all"
+        required
+      />
+
+      <input
+        type="tel"
+        placeholder="Nomor Telepon"
+        value={telp}
+        onChange={(e) => setTelp(e.target.value)}
+        className="w-full px-6 py-4 border-2 border-gray-200 rounded-2xl 
+          focus:outline-none focus:ring-2 focus:ring-[#EC008C] focus:border-transparent 
+          transition-all"
+      />
+
+      <textarea
+        placeholder="Pesan Anda"
+        rows="5"
+        value={pesan}
+        onChange={(e) => setPesan(e.target.value)}
+        className="w-full px-6 py-4 border-2 border-gray-200 rounded-2xl 
+          focus:outline-none focus:ring-2 focus:ring-[#EC008C] focus:border-transparent 
+          transition-all resize-none"
+        required
+      ></textarea>
+
+      <button
+        type="submit"
+        className="w-full bg-gradient-to-r from-[#EC008C] to-[#00B4D8] text-white 
+          py-4 rounded-2xl font-black text-lg hover:shadow-2xl hover:scale-105 
+          transition-all duration-300"
+      >
+        Kirim Pesan →
+      </button>
+    </form>
             </div>
           </div>
         </div>
@@ -1375,27 +1447,51 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-4 gap-12 mb-12">
             {/* Brand */}
-            <div>
-              <div className="flex items-center gap-3 mb-6">
-                <span className="text-5xl">🍜</span>
-                <span className="text-3xl font-black text-white">Mie Gacoan</span>
-              </div>
-              <p className="text-sm text-gray-400 leading-relaxed mb-4">
-                Brand kuliner mie pedas terpercaya sejak 2016 dengan 500+ outlet di seluruh Indonesia.
-              </p>
-              <div className="flex gap-3">
-                {['facebook', 'instagram', 'twitter', 'tiktok'].map((social, idx) => (
-                  <a
-                    key={idx}
-                    href="#"
-                    className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center 
-                      hover:bg-[#EC008C] transition-all duration-300"
-                  >
-                    <span className="text-xs">📱</span>
-                  </a>
-                ))}
-              </div>
-            </div>
+<div>
+  <div className="flex items-center gap-3 mb-6">
+    <GiNoodles className="text-5xl text-[#EC008C]" />
+    <span className="text-3xl font-black text-white">Mie Gacoan</span>
+  </div>
+
+  <p className="text-sm text-gray-400 leading-relaxed mb-4">
+    Brand kuliner mie pedas terpercaya sejak 2016 dengan 500+ outlet di seluruh Indonesia.
+  </p>
+
+  <div className="flex gap-3">
+    <a
+      href="#"
+      className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center 
+        hover:bg-[#EC008C] transition-all duration-300"
+    >
+      <FaFacebookF className="text-white text-sm" />
+    </a>
+
+    <a
+      href="#"
+      className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center 
+        hover:bg-[#EC008C] transition-all duration-300"
+    >
+      <FaInstagram className="text-white text-sm" />
+    </a>
+
+    <a
+      href="#"
+      className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center 
+        hover:bg-[#EC008C] transition-all duration-300"
+    >
+      <FaTwitter className="text-white text-sm" />
+    </a>
+
+    <a
+      href="#"
+      className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center 
+        hover:bg-[#EC008C] transition-all duration-300"
+    >
+      <FaTiktok className="text-white text-sm" />
+    </a>
+  </div>
+</div>
+
 
             {/* Quick Links */}
             <div>
