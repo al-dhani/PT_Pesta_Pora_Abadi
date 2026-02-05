@@ -64,8 +64,12 @@ const AdminSidebar = () => {
       {/* LOGO */}
       <div className="p-6 border-b border-white/10 backdrop-blur-sm bg-white/5">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 bg-gradient-to-br from-[#EC008C] to-[#00BCD4] rounded-xl flex items-center justify-center text-2xl shadow-lg">
-            <FaUtensils />
+          <div className="w-12 h-12 rounded-xl flex items-center justify-center overflow-hidden shadow-lg">
+            <img
+              src="/LogoMieGacoan.png"
+              alt="Mie Gacoan"
+              className="w-full h-full object-cover"
+            />
           </div>
           <div className="flex-1">
             <h1 className="text-2xl font-extrabold bg-gradient-to-r from-[#EC008C] to-[#00BCD4] bg-clip-text text-transparent mb-1">
@@ -87,10 +91,9 @@ const AdminSidebar = () => {
               onClick={() => navigate(`/admin/${menu.table}`)}
               className={`
                 w-full text-left px-4 py-3.5 rounded-xl font-semibold transition-all duration-300 group relative overflow-hidden
-                ${
-                  active
-                    ? `bg-gradient-to-r ${menu.gradient} shadow-lg shadow-pink-500/30 scale-105`
-                    : "hover:bg-white/10 hover:scale-105"
+                ${active
+                  ? `bg-gradient-to-r ${menu.gradient} shadow-lg shadow-pink-500/30 scale-105`
+                  : "hover:bg-white/10 hover:scale-105"
                 }
               `}
               style={{ animationDelay: `${index * 50}ms` }}
@@ -118,11 +121,10 @@ const AdminSidebar = () => {
                 </div>
 
                 <FaChevronRight
-                  className={`w-4 h-4 transition-all duration-300 ${
-                    active
-                      ? "translate-x-0 opacity-100"
-                      : "-translate-x-2 opacity-0 group-hover:translate-x-0 group-hover:opacity-100"
-                  }`}
+                  className={`w-4 h-4 transition-all duration-300 ${active
+                    ? "translate-x-0 opacity-100"
+                    : "-translate-x-2 opacity-0 group-hover:translate-x-0 group-hover:opacity-100"
+                    }`}
                 />
               </div>
 

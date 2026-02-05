@@ -187,8 +187,8 @@ const Artikel = () => {
                   </tr>
                 ) : (
                   artikels.map((item, index) => (
-                    <tr 
-                      key={item.id} 
+                    <tr
+                      key={item.id}
                       className="border-t border-gray-100 hover:bg-gradient-to-r hover:from-[#EC008C]/5 hover:to-[#00BCD4]/5 transition-all duration-300"
                       style={{ animationDelay: `${index * 50}ms` }}
                     >

@@ -5,7 +5,7 @@ export default function Header({ onMenuClick }) {
   return (
     <header className="bg-gradient-to-r from-white via-pink-50 to-cyan-50 shadow-lg sticky top-0 z-50 border-b-4 border-[#EC008C]">
       <div className="px-4 py-4 flex items-center justify-between max-w-full">
-        
+
         {/* Kiri - Menu Hamburger (di ujung banget) */}
         <button
           onClick={onMenuClick}
@@ -28,8 +28,8 @@ export default function Header({ onMenuClick }) {
 
         {/* Tengah - Navigation dengan efek hover keren */}
         <nav className="hidden lg:flex gap-8 font-semibold text-gray-700 mx-auto">
-          <a 
-            href="#home" 
+          <a
+            href="#home"
             className="relative px-3 py-2 hover:text-[#EC008C] transition-all duration-300 group"
           >
             <span className="relative z-10">Home</span>
@@ -40,9 +40,9 @@ export default function Header({ onMenuClick }) {
             {/* Decorative dots */}
             <span className="absolute -top-1 -right-1 w-2 h-2 bg-[#EC008C] rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 transform scale-0 group-hover:scale-100"></span>
           </a>
-          
-          <a 
-            href="#about" 
+
+          <a
+            href="#about"
             className="relative px-3 py-2 hover:text-[#00A8CC] transition-all duration-300 group"
           >
             <span className="relative z-10">About</span>
@@ -50,9 +50,9 @@ export default function Header({ onMenuClick }) {
             <span className="absolute inset-0 bg-gradient-to-r from-cyan-100 to-pink-100 opacity-0 group-hover:opacity-100 rounded-lg transition-opacity duration-300 -z-10"></span>
             <span className="absolute -top-1 -right-1 w-2 h-2 bg-[#00A8CC] rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 transform scale-0 group-hover:scale-100"></span>
           </a>
-          
-          <a 
-            href="#visimisi" 
+
+          <a
+            href="#visimisi"
             className="relative px-3 py-2 hover:text-[#EC008C] transition-all duration-300 group"
           >
             <span className="relative z-10">Visi & Misi</span>
@@ -60,19 +60,9 @@ export default function Header({ onMenuClick }) {
             <span className="absolute inset-0 bg-gradient-to-r from-pink-100 to-cyan-100 opacity-0 group-hover:opacity-100 rounded-lg transition-opacity duration-300 -z-10"></span>
             <span className="absolute -top-1 -right-1 w-2 h-2 bg-[#EC008C] rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 transform scale-0 group-hover:scale-100"></span>
           </a>
-          
-          <a 
-            href="#profile" 
-            className="relative px-3 py-2 hover:text-[#00A8CC] transition-all duration-300 group"
-          >
-            <span className="relative z-10">Profile</span>
-            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-[#00A8CC] to-[#EC008C] group-hover:w-full transition-all duration-300"></span>
-            <span className="absolute inset-0 bg-gradient-to-r from-cyan-100 to-pink-100 opacity-0 group-hover:opacity-100 rounded-lg transition-opacity duration-300 -z-10"></span>
-            <span className="absolute -top-1 -right-1 w-2 h-2 bg-[#00A8CC] rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 transform scale-0 group-hover:scale-100"></span>
-          </a>
-          
-          <a 
-            href="#gallery" 
+
+          <a
+            href="#gallery"
             className="relative px-3 py-2 hover:text-[#EC008C] transition-all duration-300 group"
           >
             <span className="relative z-10">Gallery</span>
@@ -80,9 +70,9 @@ export default function Header({ onMenuClick }) {
             <span className="absolute inset-0 bg-gradient-to-r from-pink-100 to-cyan-100 opacity-0 group-hover:opacity-100 rounded-lg transition-opacity duration-300 -z-10"></span>
             <span className="absolute -top-1 -right-1 w-2 h-2 bg-[#EC008C] rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 transform scale-0 group-hover:scale-100"></span>
           </a>
-          
-          <a 
-            href="#contact" 
+
+          <a
+            href="#contact"
             className="relative px-3 py-2 hover:text-[#00A8CC] transition-all duration-300 group"
           >
             <span className="relative z-10">Kontak</span>

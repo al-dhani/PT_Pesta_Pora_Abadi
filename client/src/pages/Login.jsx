@@ -2,6 +2,9 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 
+// React Icons
+import { IoEye, IoEyeOff } from "react-icons/io5";
+
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -24,17 +27,16 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden group">
+    <div className="min-h-screen relative overflow-hidden">
 
       {/* BACKGROUND IMAGE */}
       <div
-        className="absolute inset-0 bg-cover bg-center transition-all duration-700 
-                   scale-105 group-hover:scale-110 
-                   brightness-75 group-hover:brightness-90"
+        className="absolute inset-0 bg-cover bg-center brightness-80"
         style={{
           backgroundImage: "url('/images/gacoan-hero.jpg')",
         }}
       ></div>
+
 
       {/* OVERLAY GRADIENT */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/40 to-black/60"></div>
@@ -43,20 +45,30 @@ const Login = () => {
       <div className="absolute inset-0 flex items-center justify-center z-10">
         <div
           className="w-[420px] backdrop-blur-xl bg-white/20 border border-white/30 
-                     rounded-3xl shadow-2xl p-10 animate-fade-in relative"
+             rounded-3xl shadow-2xl p-10 animate-fade-in relative
+             transition-all duration-500
+             group hover:scale-[1.03] hover:shadow-[0_0_40px_rgba(236,0,140,0.6)]
+             hover:bg-white/30 hover:border-white/60"
         >
 
-          {/* HOME LINK (PINDAH KE SINI) */}
+          {/* HOME LINK */}
           <div className="absolute top-6 left-8 text-white text-sm font-medium">
             <Link to="/" className="hover:opacity-80 transition">
               ← HOME
             </Link>
           </div>
 
-          {/* TITLE */}
-          <h1 className="text-4xl font-bold text-center text-white mb-12 mt-6">
-            LOGIN
-          </h1>
+          {/* LOGO MIE GACOAN */}
+          <div className="flex justify-center mb-10 mt-6">
+            <div className="w-24 h-24 rounded-full bg-white flex items-center justify-center overflow-hidden shadow-lg">
+              <img
+                src="/LogoMieGacoan.png"
+                alt="Mie Gacoan"
+                className="w-16 h-16 object-contain"
+              />
+            </div>
+          </div>
+
 
           <form onSubmit={handleLogin} className="space-y-6">
             {/* USERNAME */}
@@ -88,7 +100,7 @@ const Login = () => {
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-0 top-3 text-white/70 hover:text-white transition"
               >
-                👁
+                {showPassword ? <IoEyeOff size={20} /> : <IoEye size={20} />}
               </button>
             </div>
 
@@ -112,13 +124,7 @@ const Login = () => {
               Login
             </button>
 
-            {/* REGISTER */}
-            <div className="text-center text-white/80 text-sm pt-4">
-              Don’t have an account?{" "}
-              <Link to="/register" className="font-semibold hover:text-white">
-                Register
-              </Link>
-            </div>
+
           </form>
         </div>
       </div>

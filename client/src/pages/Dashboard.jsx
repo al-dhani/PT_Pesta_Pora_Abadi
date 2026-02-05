@@ -27,11 +27,11 @@ const Dashboard = () => {
   }, [navigate]);
 
   const formatDate = (date) => {
-    const options = { 
-      weekday: 'long', 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
+    const options = {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
     };
     return date.toLocaleDateString('id-ID', options);
   };
@@ -72,42 +72,42 @@ const Dashboard = () => {
   }, []);
 
   const menus = [
-  { 
-    name: "Articles", 
-    table: "articles", 
-    gradient: "from-[#EC008C] to-[#ff1a9e]",
-    icon: <FaRegNewspaper size={28} color="white" />, // icon jadi putih
-    count: articles.length,
-  },
-  { 
-    name: "Partners", 
-    table: "partners", 
-    gradient: "from-[#00BCD4] to-[#00d4e8]",
-    icon: <FaHandshake size={28} color="white" />, // icon biru
-    count: partners.length,
-  },
-  { 
-    name: "Events", 
-    table: "event", 
-    gradient: "from-[#EC008C] to-[#00BCD4]",
-    icon: <FaCalendarAlt size={28} color="white" />, // icon kuning
-    count: events.length,
-  },
-  { 
-    name: "Gallery", 
-    table: "gallery", 
-    gradient: "from-[#00BCD4] to-[#EC008C]",
-    icon: <FaImages size={28} color="white" />, // icon pink
-    count: gallery.length,
-  },
-  { 
-    name: "Products", 
-    table: "products", 
-    gradient: "from-[#ff1a9e] to-[#EC008C]",
-    icon: <FaBox size={28} color="white" />, // icon pink muda
-    count: products.length,
-  },
-];
+    {
+      name: "Articles",
+      table: "articles",
+      gradient: "from-[#EC008C] to-[#ff1a9e]",
+      icon: <FaRegNewspaper size={28} color="white" />, // icon jadi putih
+      count: articles.length,
+    },
+    {
+      name: "Partners",
+      table: "partners",
+      gradient: "from-[#00BCD4] to-[#00d4e8]",
+      icon: <FaHandshake size={28} color="white" />, // icon biru
+      count: partners.length,
+    },
+    {
+      name: "Events",
+      table: "event",
+      gradient: "from-[#EC008C] to-[#00BCD4]",
+      icon: <FaCalendarAlt size={28} color="white" />, // icon kuning
+      count: events.length,
+    },
+    {
+      name: "Gallery",
+      table: "gallery",
+      gradient: "from-[#00BCD4] to-[#EC008C]",
+      icon: <FaImages size={28} color="white" />, // icon pink
+      count: gallery.length,
+    },
+    {
+      name: "Products",
+      table: "products",
+      gradient: "from-[#ff1a9e] to-[#EC008C]",
+      icon: <FaBox size={28} color="white" />, // icon pink muda
+      count: products.length,
+    },
+  ];
 
 
   return (
@@ -123,7 +123,7 @@ const Dashboard = () => {
               {formatDate(currentTime)}
             </p>
           </div>
-          
+
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-3 pl-4 border-l border-gray-200">
               <div className="text-right hidden md:block">
@@ -162,23 +162,22 @@ const Dashboard = () => {
               <div className="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full"></div>
               <div className="absolute -bottom-8 -left-8 w-32 h-32 bg-white/10 rounded-full"></div>
               <div className="absolute top-1/2 left-1/2 w-20 h-20 bg-white/5 rounded-full"></div>
-              
+
               <div className="relative z-10">
                 {/* Icon Badge */}
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-white/20 backdrop-blur-md rounded-2xl mb-4 text-3xl border-2 border-white/30 shadow-lg">
                   {menu.icon}
                 </div>
-                
+
                 {/* Stats Badge */}
                 <div className="absolute top-0 right-0 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full flex items-center gap-1">
                   <span className="text-xs font-bold text-gray-900">{menu.count}</span>
-                  <span className={`text-xs font-semibold ${
-                    menu.changeType === 'increase' ? 'text-green-600' : 'text-red-600'
-                  }`}>
+                  <span className={`text-xs font-semibold ${menu.changeType === 'increase' ? 'text-green-600' : 'text-red-600'
+                    }`}>
                     {menu.change}
                   </span>
                 </div>
-                
+
                 <h3 className="text-2xl font-bold text-white mb-1 drop-shadow-lg">
                   {menu.name}
                 </h3>
@@ -197,9 +196,8 @@ const Dashboard = () => {
                   <p className="text-2xl font-bold text-gray-900">{menu.count}</p>
                 </div>
                 <div className="text-right">
-                  <p className={`text-lg font-bold ${
-                    menu.changeType === 'increase' ? 'text-green-600' : 'text-red-600'
-                  }`}>
+                  <p className={`text-lg font-bold ${menu.changeType === 'increase' ? 'text-green-600' : 'text-red-600'
+                    }`}>
                     {menu.change}
                   </p>
                 </div>
@@ -211,10 +209,10 @@ const Dashboard = () => {
                 className={`w-full bg-gradient-to-r ${menu.gradient} text-white font-bold py-4 px-6 rounded-2xl hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2 group-hover:scale-105`}
               >
                 <span>Kelola Sekarang</span>
-                <svg 
-                  className="w-5 h-5 group-hover:translate-x-1 transition-transform" 
-                  fill="none" 
-                  stroke="currentColor" 
+                <svg
+                  className="w-5 h-5 group-hover:translate-x-1 transition-transform"
+                  fill="none"
+                  stroke="currentColor"
                   viewBox="0 0 24 24"
                 >
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
@@ -235,7 +233,7 @@ const Dashboard = () => {
               <span className="text-xs bg-[#EC008C] text-white px-2 py-1 rounded-full">New</span>
             </h3>
             <p className="text-gray-700 leading-relaxed mb-4">
-              Klik pada salah satu kartu di atas untuk mulai mengelola konten. 
+              Klik pada salah satu kartu di atas untuk mulai mengelola konten.
               Setiap modul dilengkapi dengan fitur CRUD lengkap dan statistik real-time.
             </p>
             <div className="flex flex-wrap gap-2">
