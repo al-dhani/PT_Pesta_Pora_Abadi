@@ -5,17 +5,18 @@ import {
   updateEvent,
   deleteEvent,
 } from "../controllers/eventController.js";
+import upload from "../middlewares/upload.js";
 
 const router = express.Router();
 
 // READ
 router.get("/", getAllEvent);
 
-// CREATE
-router.post("/", createEvent);
+// CREATE (WAJIB)
+router.post("/", upload.single("gambar"), createEvent);
 
-// UPDATE
-router.put("/:id", updateEvent);
+// UPDATE (BOLEH GANTI GAMBAR / ENGGA)
+router.put("/:id", upload.single("gambar"), updateEvent);
 
 // DELETE
 router.delete("/:id", deleteEvent);

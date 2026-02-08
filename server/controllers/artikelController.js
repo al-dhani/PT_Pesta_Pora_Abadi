@@ -21,13 +21,18 @@ export const getAllArtikel = (req, res) => {
    CREATE ARTIKEL
 ===================== */
 export const createArtikel = (req, res) => {
-  const { judul, slug, isi, thumbnail, penulis } = req.body;
+  const { judul, slug, isi, penulis } = req.body;
+
+const thumbnail = req.file ? req.file.filename : null;
+
+// lalu simpen ke DB
+thumbnail: thumbnail
 
   if (!judul || !isi) {
     return res.status(400).json({
       message: "Judul dan isi wajib diisi",
     });
-  }
+  } 
 
   const sql = `
     INSERT INTO articles (judul, slug, isi, thumbnail, penulis)

@@ -11,6 +11,8 @@ const Partners = () => {
   const [showModal, setShowModal] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [editId, setEditId] = useState(null);
+  const [logoFile, setLogoFile] = useState(null);
+  const [preview, setPreview] = useState(null); // 🔥 preview baru
 
   const [form, setForm] = useState({
     nama: "",
@@ -40,15 +42,24 @@ const Partners = () => {
 
     const method = isEdit ? "PUT" : "POST";
 
+    const formData = new FormData();
+    formData.append("nama", form.nama);
+    if (logoFile) {
+      formData.append("logo", logoFile);
+    }
+
     await fetch(url, {
       method,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
+      body: formData,
     });
 
     setShowModal(false);
     setIsEdit(false);
+    setEditId(null);
+    setLogoFile(null);
+    setPreview(null); // 🔥 reset preview
     setForm({ nama: "", logo: "" });
+
     fetchPartners();
   };
 
@@ -98,6 +109,7 @@ const Partners = () => {
               onClick={() => {
                 setIsEdit(false);
                 setForm({ nama: "", logo: "" });
+                setPreview(null); // 🔥 reset preview
                 setShowModal(true);
               }}
               className="bg-white text-[#00BCD4] px-6 py-3 rounded-xl font-bold hover:bg-gray-100 transition-all duration-300 flex items-center gap-2 shadow-lg hover:shadow-xl hover:scale-105 group"
@@ -166,9 +178,9 @@ const Partners = () => {
                         <div className="relative group">
                           <div className="w-32 h-24 bg-gray-50 rounded-xl shadow-md group-hover:shadow-xl transition-shadow flex items-center justify-center p-4 border border-gray-100">
                             <img
-                              src={item.logo}
+                              src={`http://localhost:5000/images/partners/${item.logo}`} // ambil dari server langsung
                               alt={item.nama}
-                              className="max-w-full max-h-full object-contain"
+                              className="w-full h-full object-cover"
                             />
                           </div>
                           <div className="absolute inset-0 bg-gradient-to-r from-[#00BCD4]/0 to-[#EC008C]/0 group-hover:from-[#00BCD4]/10 group-hover:to-[#EC008C]/10 rounded-xl transition-all"></div>
@@ -194,6 +206,15 @@ const Partners = () => {
                               setIsEdit(true);
                               setEditId(item.id);
                               setForm(item);
+                              setLogoFile(null);
+
+                              // 🔥 Tambahkan preview dari server
+                              setPreview(
+                                item.logo
+                                  ? `http://localhost:5000/images/partners/${item.logo}`
+                                  : null
+                              );
+
                               setShowModal(true);
                             }}
                             className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-2 rounded-xl font-semibold hover:from-blue-600 hover:to-blue-700 transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105 flex items-center gap-1"
@@ -245,6 +266,7 @@ const Partners = () => {
 
             {/* Modal Body */}
             <div className="p-6 space-y-4">
+              {/* Nama Partner */}
               <div>
                 <label className="block text-sm font-bold text-gray-700 mb-2">
                   Nama Partner *
@@ -257,31 +279,37 @@ const Partners = () => {
                 />
               </div>
 
+              {/* Upload Logo */}
               <div>
                 <label className="block text-sm font-bold text-gray-700 mb-2">
-                  URL Logo *
+                  Logo *
                 </label>
                 <input
+                  type="file"
+                  accept="image/*"
                   className="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-[#EC008C] focus:ring-2 focus:ring-[#EC008C]/20 transition-all outline-none"
-                  placeholder="https://example.com/logo.png"
-                  value={form.logo}
-                  onChange={(e) => setForm({ ...form, logo: e.target.value })}
+                  onChange={(e) => {
+                    const file = e.target.files[0];
+                    setLogoFile(file);
+                    setPreview(URL.createObjectURL(file)); // 🔥 preview langsung saat pilih file
+                  }}
                 />
                 <p className="text-xs text-gray-500 mt-2">
-                  Tips: Gunakan URL gambar dengan format PNG atau SVG untuk hasil terbaik
+                  Tips: Gunakan format PNG, JPG, atau SVG untuk hasil terbaik
                 </p>
               </div>
 
-              {form.logo && (
-                <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-6 border border-gray-200">
-                  <p className="text-sm font-bold text-gray-700 mb-3">Preview Logo:</p>
-                  <div className="bg-white rounded-xl p-6 flex items-center justify-center border-2 border-dashed border-gray-300 min-h-[120px]">
+              {/* Preview Logo */}
+              {preview && (
+                <div className="mt-4">
+                  <p className="text-sm font-bold text-gray-700 mb-2">Preview Logo:</p>
+                  <div className="w-full h-64 rounded-xl overflow-hidden shadow border border-gray-200 flex items-center justify-center bg-gray-50">
                     <img
-                      src={form.logo}
-                      alt="Preview"
-                      className="max-w-full max-h-32 object-contain"
+                      src={preview} // 🔥 preview file atau dari server
+                      alt="Preview Logo"
+                      className="w-full h-full object-cover"
                       onError={(e) => {
-                        e.target.src = "https://via.placeholder.com/200x100?text=Invalid+URL";
+                        e.target.src = "https://via.placeholder.com/400x200?text=Invalid+Image";
                       }}
                     />
                   </div>
@@ -290,22 +318,24 @@ const Partners = () => {
             </div>
 
             {/* Modal Footer */}
-            <div className="p-6 bg-gray-50 rounded-b-3xl border-t border-gray-100">
-              <div className="flex justify-end gap-3">
-                <button
-                  onClick={() => setShowModal(false)}
-                  className="bg-gray-200 text-gray-700 px-6 py-3 rounded-xl font-bold hover:bg-gray-300 transition-all duration-300"
-                >
-                  Batal
-                </button>
-                <button
-                  onClick={handleSubmit}
-                  className="bg-gradient-to-r from-[#00BCD4] to-[#EC008C] text-white px-6 py-3 rounded-xl font-bold hover:from-[#00d4e8] hover:to-[#ff1a9e] transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 flex items-center gap-2"
-                >
-                  <FaCheck />
-                  <span>{isEdit ? "Simpan Perubahan" : "Tambah Partner"}</span>
-                </button>
-              </div>
+            <div className="p-6 bg-gray-50 rounded-b-3xl border-t border-gray-100 flex justify-end gap-3">
+              <button
+                onClick={() => {
+                  setShowModal(false);
+                  setPreview(null); // reset preview saat batal
+                  setLogoFile(null);
+                }}
+                className="bg-gray-200 text-gray-700 px-6 py-3 rounded-xl font-bold hover:bg-gray-300 transition-all duration-300"
+              >
+                Batal
+              </button>
+              <button
+                onClick={handleSubmit}
+                className="bg-gradient-to-r from-[#00BCD4] to-[#EC008C] text-white px-6 py-3 rounded-xl font-bold hover:from-[#00d4e8] hover:to-[#ff1a9e] transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 flex items-center gap-2"
+              >
+                <FaCheck />
+                <span>{isEdit ? "Simpan Perubahan" : "Tambah Partner"}</span>
+              </button>
             </div>
           </div>
         </div>

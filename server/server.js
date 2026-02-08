@@ -23,6 +23,7 @@ app.use("/api/partners", partnersRoutes);
 app.use("/api/galeri", galeriRoutes);
 app.use("/api/admin", adminRoutes);
 app.use('/api/checkout', checkoutRoutes);
+app.use("/images", express.static("public/images"));
 
 // jalankan server
 const PORT = process.env.PORT || 5000;

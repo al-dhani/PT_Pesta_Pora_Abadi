@@ -4,7 +4,7 @@ import db from "../db/connection.js";
    GET ALL EVENT
 ===================== */
 export const getAllEvent = (req, res) => {
-  const sql = "SELECT * FROM events";
+  const sql = "SELECT * FROM events ORDER BY tanggal DESC";
 
   db.query(sql, (err, results) => {
     if (err) {
@@ -21,7 +21,8 @@ export const getAllEvent = (req, res) => {
    CREATE EVENT
 ===================== */
 export const createEvent = (req, res) => {
-  const { judul, tanggal, lokasi, gambar, deskripsi } = req.body;
+  const { judul, tanggal, lokasi, deskripsi } = req.body;
+  const gambar = req.file ? req.file.filename : null;
 
   if (!judul || !tanggal || !lokasi) {
     return res.status(400).json({
@@ -29,8 +30,10 @@ export const createEvent = (req, res) => {
     });
   }
 
-  const sql =
-    "INSERT INTO events (judul, tanggal, lokasi, gambar, deskripsi) VALUES (?, ?, ?, ?, ?)";
+  const sql = `
+    INSERT INTO events (judul, tanggal, lokasi, gambar, deskripsi)
+    VALUES (?, ?, ?, ?, ?)
+  `;
 
   db.query(
     sql,
@@ -56,31 +59,42 @@ export const createEvent = (req, res) => {
 ===================== */
 export const updateEvent = (req, res) => {
   const { id } = req.params;
-  const { judul, tanggal, lokasi, gambar, deskripsi } = req.body;
+  const { judul, tanggal, lokasi, deskripsi } = req.body;
 
-  const sql =
-    "UPDATE events SET judul=?, tanggal=?, lokasi=?, gambar=?, deskripsi=? WHERE id=?";
+  const gambarBaru = req.file ? req.file.filename : null;
 
-  db.query(
-    sql,
-    [judul, tanggal, lokasi, gambar, deskripsi, id],
-    (err, result) => {
-      if (err) {
-        console.error("ERROR DB:", err);
-        return res.status(500).json({
-          message: "Gagal update event",
-        });
-      }
+  const sql = gambarBaru
+    ? `
+      UPDATE events
+      SET judul=?, tanggal=?, lokasi=?, gambar=?, deskripsi=?
+      WHERE id=?
+    `
+    : `
+      UPDATE events
+      SET judul=?, tanggal=?, lokasi=?, deskripsi=?
+      WHERE id=?
+    `;
 
-      if (result.affectedRows === 0) {
-        return res.status(404).json({
-          message: "Event tidak ditemukan",
-        });
-      }
+  const values = gambarBaru
+    ? [judul, tanggal, lokasi, gambarBaru, deskripsi, id]
+    : [judul, tanggal, lokasi, deskripsi, id];
 
-      res.json({ message: "Event berhasil diupdate" });
+  db.query(sql, values, (err, result) => {
+    if (err) {
+      console.error("ERROR DB:", err);
+      return res.status(500).json({
+        message: "Gagal update event",
+      });
     }
-  );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        message: "Event tidak ditemukan",
+      });
+    }
+
+    res.json({ message: "Event berhasil diupdate" });
+  });
 };
 
 /* =====================

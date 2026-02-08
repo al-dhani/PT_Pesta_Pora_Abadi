@@ -9,6 +9,8 @@ const EventAdmin = () => {
   const [showModal, setShowModal] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [editId, setEditId] = useState(null);
+  const [gambarFile, setGambarFile] = useState(null);
+  const [preview, setPreview] = useState(null);
 
   const [form, setForm] = useState({
     judul: "",
@@ -16,6 +18,7 @@ const EventAdmin = () => {
     lokasi: "",
     gambar: "",
     deskripsi: "",
+    link: "",
   });
 
   const fetchEvents = async () => {
@@ -44,15 +47,38 @@ const EventAdmin = () => {
     const url = isEdit
       ? `http://localhost:5000/api/event/${editId}`
       : "http://localhost:5000/api/event";
+
     const method = isEdit ? "PUT" : "POST";
+
+    const data = new FormData();
+    data.append("judul", form.judul);
+    data.append("tanggal", form.tanggal);
+    data.append("lokasi", form.lokasi);
+    data.append("deskripsi", form.deskripsi);
+    data.append("link", form.link);
+
+    if (gambarFile) {
+      data.append("gambar", gambarFile);
+    }
+
     await fetch(url, {
       method,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
+      body: data,
     });
+
     setShowModal(false);
     setIsEdit(false);
-    setForm({ judul: "", tanggal: "", lokasi: "", gambar: "", deskripsi: "" });
+    setPreview(null);
+    setGambarFile(null);
+    setForm({
+      judul: "",
+      tanggal: "",
+      lokasi: "",
+      gambar: "",
+      deskripsi: "",
+      link: "",
+    });
+
     fetchEvents();
   };
 
@@ -87,7 +113,7 @@ const EventAdmin = () => {
               </p>
             </div>
             <button
-              onClick={() => { setIsEdit(false); setForm({ judul: "", tanggal: "", lokasi: "", gambar: "", deskripsi: "" }); setShowModal(true); }}
+              onClick={() => { setIsEdit(false); setForm({ judul: "", tanggal: "", lokasi: "", gambar: "", deskripsi: "", link: "" }); setShowModal(true); }}
               className="bg-white text-[#EC008C] px-6 py-3 rounded-xl font-bold hover:bg-gray-100 transition-all duration-300 flex items-center gap-2 shadow-lg hover:shadow-xl hover:scale-105 group"
             >
               <FaPlus className="group-hover:rotate-90 transition-transform" />
@@ -135,35 +161,73 @@ const EventAdmin = () => {
                 {events.length === 0 ? (
                   <tr>
                     <td colSpan="5" className="p-12 text-center text-gray-400">
-                      Belum ada event
+                      <div className="text-gray-400">
+                        <svg className="w-20 h-20 mx-auto mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        <p className="text-lg font-semibold">Belum ada event</p>
+                        <p className="text-sm">Klik tombol "Tambah Event" untuk membuat event baru</p>
+                      </div>
                     </td>
                   </tr>
-                ) : events.map((item, index) => (
-                  <tr key={item.id} className="border-t border-gray-100 hover:bg-gradient-to-r hover:from-[#EC008C]/5 hover:to-[#00BCD4]/5 transition-all duration-300">
-                    <td className="p-4">
-                      <img src={item.gambar || "/images/no-image.png"} alt={item.judul} className="w-28 h-20 object-cover rounded-xl shadow-md" />
-                    </td>
-                    <td className="p-4 font-bold text-gray-800">{item.judul}</td>
-                    <td className="p-4">{new Date(item.tanggal).toLocaleDateString("id-ID")}</td>
-                    <td className="p-4">{item.lokasi}</td>
-                    <td className="p-4 flex justify-center gap-2">
-                      <button
-                        onClick={() => { setIsEdit(true); setEditId(item.id); setForm(item); setShowModal(true); }}
-                        className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-2 rounded-xl font-semibold flex items-center gap-1"
-                      >
-                        <FaEdit />
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => handleDelete(item.id)}
-                        className="bg-gradient-to-r from-red-500 to-red-600 text-white px-4 py-2 rounded-xl font-semibold flex items-center gap-1"
-                      >
-                        <FaTrash />
-                        Hapus
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                ) : (
+                  events.map((item, index) => (
+                    <tr
+                      key={item.id}
+                      className="border-t border-gray-100 hover:bg-gradient-to-r hover:from-[#EC008C]/5 hover:to-[#00BCD4]/5 transition-all duration-300"
+                      style={{ animationDelay: `${index * 50}ms` }}
+                    >
+                      <td className="p-4">
+                        <div className="w-28 h-20 rounded-xl overflow-hidden bg-gray-100 shadow">
+                          <img
+                            src={`http://localhost:5000/images/event/${item.gambar}`} // ambil dari server langsung
+                            alt={item.judul}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      </td>
+                      <td className="p-4">
+                        <p className="font-bold text-gray-800 mb-1 group-hover:text-[#EC008C] transition-colors">
+                          {item.judul}
+                        </p>
+                        <p className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full inline-block">
+                          {new Date(item.tanggal).toLocaleDateString("id-ID")}
+                        </p>
+                      </td>
+                      <td className="p-4">{item.lokasi}</td>
+                      <td className="p-4 flex justify-center gap-2">
+                        <button
+                          onClick={() => {
+                            setIsEdit(true);
+                            setEditId(item.id);
+                            setForm(item);
+
+                            // 🔥 PREVIEW DARI SERVER
+                            setPreview(
+                              item.gambar
+                                ? `http://localhost:5000/images/event/${item.gambar}`
+                                : null
+                            );
+
+                            setGambarFile(null);
+                            setShowModal(true);
+                          }}
+                          className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-2 rounded-xl font-semibold hover:from-blue-600 hover:to-blue-700 transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105 flex items-center gap-1"
+                        >
+                          <FaEdit className="w-4 h-4" />
+                          <span>Edit</span>
+                        </button>
+                        <button
+                          onClick={() => handleDelete(item.id)}
+                          className="bg-gradient-to-r from-red-500 to-red-600 text-white px-4 py-2 rounded-xl font-semibold hover:from-red-600 hover:to-red-700 transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105 flex items-center gap-1"
+                        >
+                          <FaTrash className="w-4 h-4" />
+                          <span>Hapus</span>
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>
@@ -187,13 +251,58 @@ const EventAdmin = () => {
             </div>
 
             <div className="p-6 space-y-4 max-h-[60vh] overflow-y-auto">
+              <label className="block text-sm font-bold text-gray-700 mb-2">
+                Judul *
+              </label>
               <input placeholder="Judul" value={form.judul} onChange={e => setForm({ ...form, judul: e.target.value })} className="w-full p-3 border rounded-xl" />
+              <label className="block text-sm font-bold text-gray-700 mb-2">
+                Tanggal *
+              </label>
               <input type="date" value={form.tanggal} onChange={e => setForm({ ...form, tanggal: e.target.value })} className="w-full p-3 border rounded-xl" />
+              <label className="block text-sm font-bold text-gray-700 mb-2">
+                Lokasi *
+              </label>
               <input placeholder="Lokasi" value={form.lokasi} onChange={e => setForm({ ...form, lokasi: e.target.value })} className="w-full p-3 border rounded-xl" />
-              <input placeholder="URL Gambar" value={form.gambar} onChange={e => setForm({ ...form, gambar: e.target.value })} className="w-full p-3 border rounded-xl" />
-              <textarea placeholder="Deskripsi" value={form.deskripsi} onChange={e => setForm({ ...form, deskripsi: e.target.value })} className="w-full p-3 border rounded-xl" rows={4} />
-            </div>
+              <label className="block text-sm font-bold text-gray-700 mb-2">
+                Gambar *
+              </label>
+              <input
+                type="file"
+                accept="image/*"
+                className="w-full p-3 border rounded-xl"
+                onChange={(e) => {
+                  const file = e.target.files[0];
+                  setGambarFile(file);
+                  setPreview(URL.createObjectURL(file));
+                }}
+              />
 
+              {preview && (
+                <div className="mt-4">
+                  <p className="text-sm font-bold text-gray-700 mb-2">
+                    Preview Gambar
+                  </p>
+                  <img
+                    src={preview}
+                    className="w-full h-64 object-cover rounded-xl shadow"
+                  />
+                </div>
+              )}
+              <label className="block text-sm font-bold text-gray-700 mb-2">
+                Deskripsi *
+              </label>
+              <textarea placeholder="Deskripsi" value={form.deskripsi} onChange={e => setForm({ ...form, deskripsi: e.target.value })} className="w-full p-3 border rounded-xl" rows={4} />
+              <label className="block text-sm font-bold text-gray-700 mb-2">
+                Link *
+              </label>
+              <input
+                type="text"
+                placeholder="Masukkan link, contoh: https://example.com"
+                value={form.link}
+                onChange={e => setForm({ ...form, link: e.target.value })}
+                className="w-full p-3 border rounded-xl"
+              />
+            </div>
             <div className="p-6 bg-gray-50 rounded-b-3xl flex justify-end gap-3">
               <button onClick={() => setShowModal(false)} className="bg-gray-200 px-6 py-3 rounded-xl font-bold">Batal</button>
               <button onClick={handleSubmit} className="bg-gradient-to-r from-[#EC008C] via-purple-500 to-[#00BCD4] px-6 py-3 rounded-xl font-bold text-white flex items-center gap-2">

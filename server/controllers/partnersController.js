@@ -8,7 +8,7 @@ export const getAllPartners = (req, res) => {
 
   db.query(sql, (err, results) => {
     if (err) {
-      console.error(err);
+      console.error("ERROR DB:", err);
       return res.status(500).json({ message: "Gagal ambil data partners" });
     }
     res.json(results);
@@ -19,18 +19,26 @@ export const getAllPartners = (req, res) => {
    CREATE PARTNER
 ===================== */
 export const createPartner = (req, res) => {
-  const { nama, logo } = req.body;
+  const { nama } = req.body;
+  const logo = req.file ? req.file.filename : null;
 
-  if (!nama || !logo) {
-    return res.status(400).json({ message: "Nama & logo wajib diisi" });
+  if (!nama) {
+    return res.status(400).json({
+      message: "Nama partner wajib diisi",
+    });
   }
 
-  const sql = "INSERT INTO partners (nama, logo) VALUES (?, ?)";
+  const sql = `
+    INSERT INTO partners (nama, logo)
+    VALUES (?, ?)
+  `;
 
   db.query(sql, [nama, logo], (err, result) => {
     if (err) {
-      console.error(err);
-      return res.status(500).json({ message: "Gagal tambah partner" });
+      console.error("ERROR DB:", err);
+      return res.status(500).json({
+        message: "Gagal tambah partner",
+      });
     }
 
     res.json({
@@ -45,19 +53,27 @@ export const createPartner = (req, res) => {
 ===================== */
 export const updatePartner = (req, res) => {
   const { id } = req.params;
-  const { nama, logo } = req.body;
+  const { nama } = req.body;
+  const logo = req.file ? req.file.filename : req.body.logo;
 
-  const sql =
-    "UPDATE partners SET nama = ?, logo = ? WHERE id = ?";
+  const sql = `
+    UPDATE partners 
+    SET nama = ?, logo = ?
+    WHERE id = ?
+  `;
 
   db.query(sql, [nama, logo, id], (err, result) => {
     if (err) {
-      console.error(err);
-      return res.status(500).json({ message: "Gagal update partner" });
+      console.error("ERROR DB:", err);
+      return res.status(500).json({
+        message: "Gagal update partner",
+      });
     }
 
     if (result.affectedRows === 0) {
-      return res.status(404).json({ message: "Partner tidak ditemukan" });
+      return res.status(404).json({
+        message: "Partner tidak ditemukan",
+      });
     }
 
     res.json({ message: "Partner berhasil diupdate" });
@@ -74,8 +90,10 @@ export const deletePartner = (req, res) => {
 
   db.query(sql, [id], (err, result) => {
     if (err) {
-      console.error(err);
-      return res.status(500).json({ message: "Gagal hapus partner" });
+      console.error("ERROR DB:", err);
+      return res.status(500).json({
+        message: "Gagal hapus partner",
+      });
     }
 
     res.json({ message: "Partner berhasil dihapus" });

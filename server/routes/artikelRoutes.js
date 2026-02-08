@@ -5,19 +5,16 @@ import {
   updateArtikel,
   deleteArtikel,
 } from "../controllers/artikelController.js";
+import upload from "../middlewares/upload.js";
 
 const router = express.Router();
 
-// READ
 router.get("/", getAllArtikel);
 
-// CREATE
-router.post("/", createArtikel);
+// ⬇⬇ INI WAJIB
+router.post("/", upload.single("thumbnail"), createArtikel);
 
-// UPDATE
 router.put("/:id", updateArtikel);
-
-// DELETE
 router.delete("/:id", deleteArtikel);
 
 export default router;

@@ -5,12 +5,16 @@ import {
   updatePartner,
   deletePartner,
 } from "../controllers/partnersController.js";
+import upload from "../middlewares/upload.js";
 
 const router = express.Router();
 
 router.get("/", getAllPartners);
-router.post("/", createPartner);
-router.put("/:id", updatePartner);
+
+// ⬇⬇ WAJIB, SAMA KAYAK ARTIKEL
+router.post("/", upload.single("logo"), createPartner);
+router.put("/:id", upload.single("logo"), updatePartner);
+
 router.delete("/:id", deletePartner);
 
 export default router;

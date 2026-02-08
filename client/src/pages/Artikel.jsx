@@ -11,6 +11,8 @@ const Artikel = () => {
   const [showModal, setShowModal] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [editId, setEditId] = useState(null);
+  const [thumbnailFile, setThumbnailFile] = useState(null);
+  const [preview, setPreview] = useState(null); // 🔥 WAJIB ADA
 
   const [form, setForm] = useState({
     judul: "",
@@ -62,14 +64,25 @@ const Artikel = () => {
 
     const method = isEdit ? "PUT" : "POST";
 
+    const data = new FormData();
+    data.append("judul", form.judul);
+    data.append("slug", form.slug);
+    data.append("isi", form.isi);
+    data.append("penulis", form.penulis);
+
+    if (thumbnailFile) {
+      data.append("thumbnail", thumbnailFile);
+    }
+
     await fetch(url, {
       method,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
+      body: data,
     });
 
     setShowModal(false);
     setIsEdit(false);
+    setPreview(null);
+    setThumbnailFile(null);
     setForm({
       judul: "",
       slug: "",
@@ -77,6 +90,7 @@ const Artikel = () => {
       thumbnail: "",
       penulis: "",
     });
+
     fetchArtikel();
   };
 
@@ -193,13 +207,15 @@ const Artikel = () => {
                       style={{ animationDelay: `${index * 50}ms` }}
                     >
                       <td className="p-4">
-                        <div className="relative group">
+                        <div className="w-28 h-20 rounded-xl overflow-hidden bg-gray-100 shadow">
                           <img
-                            src={item.thumbnail || "/images/no-image.png"}
-                            className="w-24 h-20 object-cover rounded-xl shadow-md group-hover:shadow-xl transition-shadow"
+                            src={`http://localhost:5000/images/artikel/${item.thumbnail}`}
                             alt={item.judul}
+                            className="w-full h-full object-cover"
+                            onError={(e) => {
+                              e.target.src = "/no-image.png"; // optional fallback
+                            }}
                           />
-                          <div className="absolute inset-0 bg-gradient-to-r from-[#EC008C]/0 to-[#00BCD4]/0 group-hover:from-[#EC008C]/20 group-hover:to-[#00BCD4]/20 rounded-xl transition-all"></div>
                         </div>
                       </td>
                       <td className="p-4">
@@ -225,6 +241,15 @@ const Artikel = () => {
                               setIsEdit(true);
                               setEditId(item.id);
                               setForm(item);
+
+                              // INI KUNCI PREVIEW EDIT
+                              setPreview(
+                                item.thumbnail
+                                  ? `http://localhost:5000/images/artikel/${item.thumbnail}`
+                                  : null
+                              );
+
+                              setThumbnailFile(null);
                               setShowModal(true);
                             }}
                             className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-2 rounded-xl font-semibold hover:from-blue-600 hover:to-blue-700 transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105 flex items-center gap-1"
@@ -311,16 +336,29 @@ const Artikel = () => {
                 {/* Thumbnail */}
                 <div>
                   <label className="block text-sm font-bold text-gray-700 mb-2">
-                    URL Thumbnail
+                    Gambar
                   </label>
                   <input
-                    className="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-[#EC008C] focus:ring-2 focus:ring-[#EC008C]/20 transition-all outline-none"
-                    placeholder="https://..."
-                    value={form.thumbnail}
-                    onChange={(e) =>
-                      setForm({ ...form, thumbnail: e.target.value })
-                    }
+                    type="file"
+                    accept="image/*"
+                    className="w-full p-3 border-2 border-gray-200 rounded-xl"
+                    onChange={(e) => {
+                      const file = e.target.files[0];
+                      setThumbnailFile(file);       // simpen file buat submit
+                      setPreview(URL.createObjectURL(file)); // preview aja
+                    }}
                   />
+
+                  {preview && (
+  <div className="mt-4">
+    <p className="text-sm font-bold text-gray-700 mb-2">Preview Gambar</p>
+    <img
+      src={preview}
+      className="w-full h-64 object-cover rounded-xl shadow"
+      alt="Preview Gambar"
+    />
+  </div>
+)}
                 </div>
 
                 {/* Penulis */}

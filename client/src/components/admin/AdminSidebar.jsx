@@ -6,7 +6,6 @@ import {
   FaCalendarAlt,
   FaImages,
   FaBoxOpen,
-  FaUtensils,
   FaChevronRight,
   FaSignOutAlt,
 } from "react-icons/fa";
@@ -57,14 +56,15 @@ const AdminSidebar = () => {
   const isActive = (path) => location.pathname.includes(path);
 
   return (
-    <aside className="bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 text-white fixed top-0 left-0 w-64 h-screen shadow-xl z-50">
+    <aside className="fixed top-0 left-0 w-64 h-screen flex flex-col bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 text-white shadow-xl z-50">
+      
       {/* Decorative top line */}
-      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#EC008C] via-[#00BCD4] to-[#EC008C] animate-pulse"></div>
+      <div className="h-1 bg-gradient-to-r from-[#EC008C] via-[#00BCD4] to-[#EC008C] animate-pulse" />
 
       {/* LOGO */}
       <div className="p-6 border-b border-white/10 backdrop-blur-sm bg-white/5">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-xl flex items-center justify-center overflow-hidden shadow-lg">
+          <div className="w-12 h-12 rounded-xl overflow-hidden shadow-lg">
             <img
               src="/LogoMieGacoan.png"
               alt="Mie Gacoan"
@@ -91,25 +91,24 @@ const AdminSidebar = () => {
               onClick={() => navigate(`/admin/${menu.table}`)}
               className={`
                 w-full text-left px-4 py-3.5 rounded-xl font-semibold transition-all duration-300 group relative overflow-hidden
-                ${active
-                  ? `bg-gradient-to-r ${menu.gradient} shadow-lg shadow-pink-500/30 scale-105`
-                  : "hover:bg-white/10 hover:scale-105"
+                ${
+                  active
+                    ? `bg-gradient-to-r ${menu.gradient} shadow-lg shadow-pink-500/30 scale-105`
+                    : "hover:bg-white/10 hover:scale-105"
                 }
               `}
               style={{ animationDelay: `${index * 50}ms` }}
             >
               {!active && (
                 <div
-                  className={`absolute inset-0 bg-gradient-to-r ${menu.gradient} opacity-0 group-hover:opacity-20 transition-opacity duration-300`}
-                ></div>
+                  className={`absolute inset-0 bg-gradient-to-r ${menu.gradient} opacity-0 group-hover:opacity-20 transition-opacity`}
+                />
               )}
 
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
 
               <div className="flex items-center gap-3 relative z-10">
-                <span className="text-xl group-hover:scale-110 transition-transform">
-                  {menu.icon}
-                </span>
+                <span className="text-xl">{menu.icon}</span>
 
                 <div className="flex-1">
                   <span className="block">{menu.name}</span>
@@ -121,31 +120,32 @@ const AdminSidebar = () => {
                 </div>
 
                 <FaChevronRight
-                  className={`w-4 h-4 transition-all duration-300 ${active
-                    ? "translate-x-0 opacity-100"
-                    : "-translate-x-2 opacity-0 group-hover:translate-x-0 group-hover:opacity-100"
-                    }`}
+                  className={`w-4 h-4 transition-all ${
+                    active
+                      ? "opacity-100"
+                      : "opacity-0 group-hover:opacity-100"
+                  }`}
                 />
               </div>
 
               {active && (
-                <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1.5 h-10 bg-white rounded-l-full shadow-lg shadow-white/50"></div>
+                <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1.5 h-10 bg-white rounded-l-full shadow-lg shadow-white/50" />
               )}
             </button>
           );
         })}
       </nav>
 
-      {/* LOGOUT */}
+      {/* LOGOUT — NEMPEL BAWAH */}
       <div className="p-4 border-t border-white/10 backdrop-blur-sm bg-white/5">
         <button
           onClick={() => {
             localStorage.removeItem("adminToken");
             navigate("/login");
           }}
-          className="w-full bg-gradient-to-r from-red-500 to-red-600 text-white py-3.5 px-4 rounded-xl font-bold hover:from-red-600 hover:to-red-700 transition-all duration-300 shadow-lg hover:shadow-red-500/50 flex items-center justify-center gap-2 hover:scale-105 active:scale-95"
+          className="w-full bg-gradient-to-r from-red-500 to-red-600 text-white py-3.5 px-4 rounded-xl font-bold transition-all duration-300 shadow-lg hover:shadow-red-500/50 flex items-center justify-center gap-2 hover:scale-105 active:scale-95"
         >
-          <FaSignOutAlt className="text-lg group-hover:rotate-12 transition-transform" />
+          <FaSignOutAlt className="text-lg" />
           <span>Logout</span>
         </button>
       </div>
