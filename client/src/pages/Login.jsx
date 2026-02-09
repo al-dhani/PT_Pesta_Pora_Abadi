@@ -104,16 +104,6 @@ const Login = () => {
               </button>
             </div>
 
-            {/* REMEMBER */}
-            <div className="flex items-center gap-2 text-white text-sm">
-              <input
-                type="checkbox"
-                checked={rememberMe}
-                onChange={(e) => setRememberMe(e.target.checked)}
-              />
-              Remember Me
-            </div>
-
             {/* BUTTON */}
             <button
               type="submit"

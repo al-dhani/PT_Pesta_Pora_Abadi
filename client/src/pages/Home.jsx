@@ -19,6 +19,8 @@ export default function Home() {
   const [email, setEmail] = useState("");
   const [telp, setTelp] = useState("");
   const [pesan, setPesan] = useState("");
+  const [companyName, setCompanyName] = useState("");
+  const [companyEmail, setCompanyEmail] = useState("");
 
   const [products, setProducts] = useState([]);
   useEffect(() => {
@@ -881,7 +883,7 @@ export default function Home() {
       </section>
 
       {/* CTA SECTION */}
-      <section className="py-24 bg-gradient-to-r from-[#00B4D8] to-[#0096B8] text-white relative overflow-hidden">
+      <section id="franchise" className="py-24 bg-gradient-to-r from-[#00B4D8] to-[#0096B8] text-white relative overflow-hidden">
         {/* Background blur */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-10 left-10 w-64 h-64 bg-white rounded-full blur-3xl"></div>
@@ -1536,7 +1538,7 @@ export default function Home() {
             <div>
               <h4 className="font-black text-white text-lg mb-6">Quick Links</h4>
               <ul className="space-y-3">
-                {['About', 'Products', 'Gallery', 'Contact'].map((link, idx) => (
+                {['Home', 'About', 'Products', 'Gallery', 'Contact'].map((link, idx) => (
                   <li key={idx}>
                     <a href={`#${link.toLowerCase().replace(' ', '')}`}
                       className="hover:text-[#EC008C] transition-colors flex items-center gap-2 group">
@@ -1552,35 +1554,89 @@ export default function Home() {
             <div>
               <h4 className="font-black text-white text-lg mb-6">Layanan</h4>
               <ul className="space-y-3">
-                {['Franchise', 'Karir', 'Partnership', 'Investor'].map((service, idx) => (
+                {[
+                  { name: 'Franchise', link: 'franchise' },
+                  { name: 'Event', link: 'event' },
+                  { name: 'Partners', link: 'partners' },
+                  { name: 'Articles', link: 'artikel' },
+                ].map((service, idx) => (
                   <li key={idx}>
-                    <a href="#" className="hover:text-[#EC008C] transition-colors flex items-center gap-2 group">
+                    <a
+                      href={`#${service.link}`}
+                      className="hover:text-[#EC008C] transition-colors flex items-center gap-2 group"
+                    >
                       <span className="w-0 h-0.5 bg-[#EC008C] group-hover:w-4 transition-all duration-300"></span>
-                      {service}
+                      {service.name}
                     </a>
                   </li>
                 ))}
               </ul>
             </div>
 
-            {/* Newsletter */}
+            {/* Partnership */}
             <div>
-              <h4 className="font-black text-white text-lg mb-6">Newsletter</h4>
+              <h4 className="font-black text-white text-lg mb-4">Partnership</h4>
+
               <p className="text-sm mb-4 text-gray-400">
-                Dapatkan update terbaru dari kami
+                Tertarik kolaborasi? Tinggalkan email perusahaan Anda.
               </p>
-              <div className="flex gap-2">
+
+              <form
+                className="flex flex-col gap-3"
+                onSubmit={(e) => {
+                  e.preventDefault();
+
+                  emailjs
+                    .send(
+                      "service_0rrmmus",       // service ID (punya lu)
+                      "template_hpwzan6",  // template baru (lihat step 3)
+                      {
+                        company_name: companyName,
+                        company_email: companyEmail,
+                      },
+                      "8E8MfU1BGE2NrKGcH"       // public key
+                    )
+                    .then(
+                      () => {
+                        alert("Pengajuan partnership berhasil dikirim");
+                        setCompanyName("");
+                        setCompanyEmail("");
+                      },
+                      () => {
+                        alert("Gagal mengirim partnership");
+                      }
+                    );
+                }}
+              >
+                <input
+                  type="text"
+                  placeholder="Nama Perusahaan"
+                  value={companyName}
+                  onChange={(e) => setCompanyName(e.target.value)}
+                  required
+                  className="px-4 py-3 rounded-xl bg-gray-800 text-white border border-gray-700
+      focus:outline-none focus:ring-2 focus:ring-[#EC008C]"
+                />
+
                 <input
                   type="email"
-                  placeholder="Email Anda"
-                  className="flex-1 px-4 py-3 rounded-xl bg-gray-800 text-white border border-gray-700 
-                    focus:outline-none focus:ring-2 focus:ring-[#EC008C] transition-all"
+                  placeholder="Email Perusahaan"
+                  value={companyEmail}
+                  onChange={(e) => setCompanyEmail(e.target.value)}
+                  required
+                  className="px-4 py-3 rounded-xl bg-gray-800 text-white border border-gray-700
+      focus:outline-none focus:ring-2 focus:ring-[#EC008C]"
                 />
-                <button className="bg-gradient-to-r from-[#EC008C] to-[#00B4D8] px-6 py-3 rounded-xl 
-                  font-bold hover:shadow-lg hover:scale-105 transition-all duration-300">
-                  →
+
+                <button
+                  type="submit"
+                  className="mt-1 bg-gradient-to-r from-[#EC008C] to-[#00B4D8]
+      px-6 py-3 rounded-xl font-bold
+      hover:shadow-lg hover:scale-105 transition-all duration-300"
+                >
+                  Ajukan Partnership
                 </button>
-              </div>
+              </form>
             </div>
           </div>
 
