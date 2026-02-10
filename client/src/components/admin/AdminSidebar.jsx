@@ -8,6 +8,7 @@ import {
   FaBoxOpen,
   FaChevronRight,
   FaSignOutAlt,
+  FaMoneyBillWave,
 } from "react-icons/fa";
 
 const AdminSidebar = () => {
@@ -51,13 +52,19 @@ const AdminSidebar = () => {
       icon: <FaBoxOpen />,
       gradient: "from-[#ff1a9e] to-[#EC008C]",
     },
+    {
+      name: "Admintransactions",
+      table: "transactions",
+      icon: <FaMoneyBillWave />,
+      gradient: "from-green-500 to-emerald-600",
+    },
   ];
 
   const isActive = (path) => location.pathname.includes(path);
 
   return (
     <aside className="fixed top-0 left-0 w-64 h-screen flex flex-col bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 text-white shadow-xl z-50">
-      
+
       {/* Decorative top line */}
       <div className="h-1 bg-gradient-to-r from-[#EC008C] via-[#00BCD4] to-[#EC008C] animate-pulse" />
 
@@ -91,10 +98,9 @@ const AdminSidebar = () => {
               onClick={() => navigate(`/admin/${menu.table}`)}
               className={`
                 w-full text-left px-4 py-3.5 rounded-xl font-semibold transition-all duration-300 group relative overflow-hidden
-                ${
-                  active
-                    ? `bg-gradient-to-r ${menu.gradient} shadow-lg shadow-pink-500/30 scale-105`
-                    : "hover:bg-white/10 hover:scale-105"
+                ${active
+                  ? `bg-gradient-to-r ${menu.gradient} shadow-lg shadow-pink-500/30 scale-105`
+                  : "hover:bg-white/10 hover:scale-105"
                 }
               `}
               style={{ animationDelay: `${index * 50}ms` }}
@@ -120,11 +126,10 @@ const AdminSidebar = () => {
                 </div>
 
                 <FaChevronRight
-                  className={`w-4 h-4 transition-all ${
-                    active
+                  className={`w-4 h-4 transition-all ${active
                       ? "opacity-100"
                       : "opacity-0 group-hover:opacity-100"
-                  }`}
+                    }`}
                 />
               </div>
 

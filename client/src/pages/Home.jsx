@@ -11,6 +11,7 @@ import {
   FaPhoneAlt,
   FaComments,
 } from "react-icons/fa";
+import { Link } from 'react-router-dom';
 
 export default function Home() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -34,46 +35,46 @@ export default function Home() {
       });
   }, []);
 
-  const handlePayment = async (product) => {
-    try {
-      // 1. Request token ke backend
-      const res = await axios.post("http://localhost:5000/api/checkout", {
-        orderId: `INV-${Date.now()}`, // ID unik
-        grossAmount: product.harga, // total bayar
-        customer: {
-          firstName: "Alif",
-          lastName: "Ramadhani",
-          email: "alif@example.com",
-          phone: "081234567890",
-        },
-      });
+  // const handlePayment = async (product) => {
+  //   try {
+  //     // 1. Request token ke backend
+  //     const res = await axios.post("http://localhost:5000/api/checkout", {
+  //       orderId: `INV-${Date.now()}`, // ID unik
+  //       grossAmount: product.harga, // total bayar
+  //       customer: {
+  //         firstName: "Alif",
+  //         lastName: "Ramadhani",
+  //         email: "alif@example.com",
+  //         phone: "081234567890",
+  //       },
+  //     });
 
-      const token = res.data.token;
+  //     const token = res.data.token;
 
-      // 2. Panggil Snap popup
-      window.snap.pay(token, {
-        onSuccess: function (result) {
-          console.log("success:", result);
-          alert("Pembayaran berhasil!");
-        },
-        onPending: function (result) {
-          console.log("pending:", result);
-          alert("Pembayaran pending!");
-        },
-        onError: function (result) {
-          console.log("error:", result);
-          alert("Terjadi kesalahan pembayaran!");
-        },
-        onClose: function () {
-          console.log("popup closed");
-          alert("Anda menutup popup tanpa membayar");
-        },
-      });
-    } catch (err) {
-      console.error(err);
-      alert("Gagal membuat transaksi!");
-    }
-  };
+  //     // 2. Panggil Snap popup
+  //     window.snap.pay(token, {
+  //       onSuccess: function (result) {
+  //         console.log("success:", result);
+  //         alert("Pembayaran berhasil!");
+  //       },
+  //       onPending: function (result) {
+  //         console.log("pending:", result);
+  //         alert("Pembayaran pending!");
+  //       },
+  //       onError: function (result) {
+  //         console.log("error:", result);
+  //         alert("Terjadi kesalahan pembayaran!");
+  //       },
+  //       onClose: function () {
+  //         console.log("popup closed");
+  //         alert("Anda menutup popup tanpa membayar");
+  //       },
+  //     });
+  //   } catch (err) {
+  //     console.error(err);
+  //     alert("Gagal membuat transaksi!");
+  //   }
+  // };
 
   const displayedProducts = showAll
     ? products
@@ -813,7 +814,14 @@ export default function Home() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
 
             {displayedProducts.map(product => (
-              <div
+              <Link
+                to={`/produk/${product.id}`}
+                state={{
+                  id: product.id,
+                  nama: product.nama_produk,
+                  harga: product.harga,
+                  image: product.image
+                }}
                 key={product.id}
                 className="group bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl 
                   transition-all duration-300 hover:-translate-y-2"
@@ -845,7 +853,7 @@ export default function Home() {
                     </div>
 
                     <button
-                      onClick={() => handlePayment(product)}
+                      // onClick={() => handlePayment(product)}
                       className="bg-gradient-to-r from-[#EC008C] to-[#C4007A] text-white px-6 py-3 
                       rounded-full font-bold hover:shadow-lg hover:scale-105 transition-all duration-300"
                     >
@@ -853,7 +861,7 @@ export default function Home() {
                     </button>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
 
