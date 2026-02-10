@@ -15,7 +15,7 @@ export const createTransaction = async (req, res) => {
       customer_email,
       gateway,
       method,
-    } = req.body;
+    } = req.body; 
 
     // 1️⃣ Ambil produk
     const [product] = await new Promise((resolve, reject) => {
@@ -212,9 +212,11 @@ export const getAllTransactions = async (req, res) => {
     const dataQuery = `
   SELECT 
     p.*,
-    o.order_code
+    o.order_code,
+    pr.nama_produk
   FROM payments p
   JOIN orders o ON o.id = p.order_id
+  JOIN products pr ON pr.id = o.product_id
   ${where}
   ORDER BY p.created_at DESC
   LIMIT ? OFFSET ?
@@ -224,6 +226,7 @@ export const getAllTransactions = async (req, res) => {
   SELECT COUNT(*) as total
   FROM payments p
   JOIN orders o ON o.id = p.order_id
+  JOIN products pr ON pr.id = o.product_id
   ${where}
 `;
 

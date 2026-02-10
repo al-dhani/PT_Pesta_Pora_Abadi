@@ -28,6 +28,8 @@ export default function App() {
         }
       />
 
+      <Route path="/produk/:id" element={<Checkout />} />
+
       {/* ADMIN (NO HEADER CLIENT) */}
       <Route path="/login" element={<Login />} />
       <Route path="/admin/dashboard" element={<Dashboard />} />

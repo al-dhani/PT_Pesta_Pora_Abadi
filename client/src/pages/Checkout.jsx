@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function CheckoutOption4() {
     const location = useLocation();
@@ -12,6 +12,8 @@ export default function CheckoutOption4() {
     }
     const subtotal = product.harga * quantity;
     const total = subtotal; // bisa ditambah shipping nanti
+
+    const navigate = useNavigate();
 
     const [form, setForm] = useState({
         email: "",
@@ -55,9 +57,11 @@ export default function CheckoutOption4() {
             window.snap.pay(token, {
                 onSuccess: function (result) {
                     alert("Pembayaran berhasil!");
+                    navigate("/#products");
                 },
                 onPending: function (result) {
                     alert("Pembayaran pending!");
+                    navigate("/");
                 },
                 onError: function (result) {
                     alert("Terjadi kesalahan pembayaran!");
@@ -102,7 +106,7 @@ export default function CheckoutOption4() {
 
                     {/* Back Button */}
                     <button
-                        onClick={() => window.history.back()}
+                        onClick={() => navigate("/#home")}
                         className="absolute top-8 left-8 w-12 h-12 bg-white/20 text-white hover:bg-white/30 rounded-full flex items-center justify-center transition-all shadow-md z-20"
                     >
                         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
