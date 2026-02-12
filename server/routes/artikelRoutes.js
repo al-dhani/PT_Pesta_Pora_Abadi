@@ -4,6 +4,7 @@ import {
   createArtikel,
   updateArtikel,
   deleteArtikel,
+  getArtikelBySlug,
 } from "../controllers/artikelController.js";
 import upload from "../middlewares/upload.js";
 
@@ -15,5 +16,6 @@ router.get("/", getAllArtikel);
 router.post("/", upload.single("thumbnail"), createArtikel);
 router.put("/:id", upload.single("thumbnail"), updateArtikel);
 router.delete("/:id", deleteArtikel);
+router.get("/slug/:slug", getArtikelBySlug);
 
 export default router;

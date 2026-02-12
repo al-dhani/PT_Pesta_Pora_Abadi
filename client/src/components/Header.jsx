@@ -72,6 +72,16 @@ export default function Header({ onMenuClick }) {
           </a>
 
           <a
+            href="#products"
+            className="relative px-3 py-2 hover:text-[#EC008C] transition-all duration-300 group"
+          >
+            <span className="relative z-10">Produk</span>
+            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-[#EC008C] to-[#00A8CC] group-hover:w-full transition-all duration-300"></span>
+            <span className="absolute inset-0 bg-gradient-to-r from-pink-100 to-cyan-100 opacity-0 group-hover:opacity-100 rounded-lg transition-opacity duration-300 -z-10"></span>
+            <span className="absolute -top-1 -right-1 w-2 h-2 bg-[#EC008C] rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 transform scale-0 group-hover:scale-100"></span>
+          </a>
+
+          <a
             href="#contact"
             className="relative px-3 py-2 hover:text-[#00A8CC] transition-all duration-300 group"
           >

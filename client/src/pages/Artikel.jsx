@@ -12,7 +12,7 @@ const Artikel = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [editId, setEditId] = useState(null);
   const [thumbnailFile, setThumbnailFile] = useState(null);
-  const [preview, setPreview] = useState(null); // 🔥 WAJIB ADA
+  const [preview, setPreview] = useState(null);
 
   const [form, setForm] = useState({
     judul: "",
@@ -223,9 +223,14 @@ const Artikel = () => {
                         <p className="font-bold text-gray-800 mb-1 group-hover:text-[#EC008C] transition-colors">
                           {item.judul}
                         </p>
-                        <p className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full inline-block">
+                        <a
+                          href={`http://localhost:5173/artikel/${item.slug}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xs text-blue-600 bg-blue-100 px-2 py-1 rounded-full inline-block hover:underline"
+                        >
                           {item.slug}
-                        </p>
+                        </a>
                       </td>
                       <td className="p-4">
                         <div className="flex items-center gap-2">

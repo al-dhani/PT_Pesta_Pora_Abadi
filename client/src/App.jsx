@@ -11,6 +11,7 @@ import Dashboard from "./pages/Dashboard";
 import Partners from "./pages/Partners";
 import Checkout from "./pages/Checkout";
 import Admintransactions from "./pages/Admintransactions";
+import DetailArtikel from "./pages/DetailArtikel";
 
 export default function App() {
   return (
@@ -23,11 +24,12 @@ export default function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/produk/:id" element={<Checkout />} />
+              <Route path="/artikel/:slug" element={<DetailArtikel />} />
             </Routes>
           </Layout>
         }
       />
-
+    
       <Route path="/produk/:id" element={<Checkout />} />
 
       {/* ADMIN (NO HEADER CLIENT) */}

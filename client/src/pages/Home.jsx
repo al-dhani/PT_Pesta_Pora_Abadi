@@ -1294,9 +1294,8 @@ export default function Home() {
                     {article.judul}
                   </h3>
 
-                  <a
-                    href={article.slug}
-                    target="_blank"
+                  <Link
+                    to={`/artikel/${article.slug}`}
                     className="text-[#EC008C] font-bold hover:gap-2 flex items-center gap-1 transition-all"
                   >
                     Baca Selengkapnya
@@ -1306,9 +1305,14 @@ export default function Home() {
                       stroke="currentColor"
                       viewBox="0 0 24 24"
                     >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5l7 7-7 7"
+                      />
                     </svg>
-                  </a>
+                  </Link>
                 </div>
               </div>
             ))}
